@@ -479,5 +479,81 @@ Before we talk about the loop filter, let's just say that the PD looks as follow
 , so the overall gain of the PD defined as Output/Input is <img src="https://render.githubusercontent.com/render/math?math=\mathrm{PD}\_\mathrm{gain}=\frac{\left(\frac{\mathrm{VDD}}{2}\right)}{\pi }=\frac{\mathrm{VDD}}{2\pi}">
 
 
+![image](https://user-images.githubusercontent.com/95447782/164785641-0eddef10-005a-4260-aa76-f138c7207547.png)
+
+So the model of the PD is this:
+
+![image](https://user-images.githubusercontent.com/95447782/164785672-62dfc3d6-2585-4ce2-b5e5-2487adb534f2.png)
+
+
+Now, the Phase Detector output is a couple of digital signals, but what we need at the input of the VCO is an analog signal (Vctrl). So between the PD and the VCO we need some sort of D/A conversion.
+
+How do we do fast D/A conversion? Current steering.
+
+![image](https://user-images.githubusercontent.com/95447782/164785701-1746884b-1e81-4234-a119-8aaa42dfd5db.png)
+
+
+So at the output of the Charge Pump, the VOLTAGE that we get on the CAP (let's call it Vcp) is the following:
+
+* When UP is 1 but DOWN is 0, Cap charges up at a rate <img src="https://render.githubusercontent.com/render/math?math=\frac{I_o }{C}">. By rate we mean Volts per second, i.e. the voltage on the cap increases as a linear ramp from its initial voltage at a rate of <img src="https://render.githubusercontent.com/render/math?math=\frac{I_o }{C}"> Volts per second. So, if it was fully discharged, starting at 0V, and we push let's say 1mA into it, and the cap is 1pF then 1mA/1pF=1e9 V/s = 1V per 1 nanosecond.
+
+* In the opporiste case, if DOWN is 1 and UP is 0, the Cap will (dis)charge at a rate <img src="https://render.githubusercontent.com/render/math?math=\frac{I_o }{C}">, again in the example before it would go from 1V down to 0V in 1 nanosecond.
+
+So, the value of Vcp represents the value of the "ACCUMULATED AREA UNDER THE CURVE OF UP-DOWN DIFFERENTIAL SIGNAL". Ideally, what we would REALLY want is for the value of Vcp to represent the AVERAGE value of UP-DOWN differential signal. Yes, all we are trying to achieve here is to put together a mechanism that will tell us what is the AVERAGE of UP-DOWN differential signal. Why? Because we want to correct our VCO based on how much its phase differs from the reference phase ON AVERAGE. Like, not instantaneously, we don't want to wabble our VCO around every single reference clock period, no... We want to wait a few reference clock periods, get the average phase difference of our VCO's phase from the reference, and then based on that average correct our VCO a bit up or down.
+
+So, keep in mind that throwing current into (and out of) the cap is our crude attempt at getting a voltage out of the CP that represents the Average of UP-DOWN.
+
+Now look at the following diagram to see exactly what the CP voltage does as a response to UP-DOWN pulses:
+
+![image](https://user-images.githubusercontent.com/95447782/164786025-2c81d294-49ad-4361-987a-d8e8e5a29d2b.png)
+
+
+From the previous diagram we can see visually the behaviour of Vcp. A few moments later we will see that this Charge Pump mechanism is not exactly providing an instantaneous average of UP-DOWN, just an integral of it, but that will serve as an approximation for the average of UP-DOWN.
+
+Writing the behaviour of Vcp mathematically, Vcp is a representation of the INTEGRAL of "UP-DOWN" differential signal. That is:
+
+![image](https://user-images.githubusercontent.com/95447782/164786044-f42c7b00-2872-4498-a40e-d9a37a747ec5.png)
+
+
+That's an "undefined" integral and represents the overall behaviour of Vcp as a function of UP-DOWN differential signal. But, to be more accurate, if we want to know the SPECIFIC value of Vcp at a particular time, we need to evaluate the integral, like this:
+
+![image](https://user-images.githubusercontent.com/95447782/164786054-0cfef4f0-b7b3-46d0-8f28-9418cae12d4f.png)
+
+
+Please note that the expression INSIDE THE INTEGRAL is NOT the average value of UP-DOWN differential signal. It's the ACTUAL TIME-CHANGING VALUE(s) taken dynamically by UP-DOWN differential signal. Why do we bring this up? As we mentioned before, ideally we want the CP to produce a voltage that is a representation of the AVERAGE value of UP-DOWN. Why? Again, because we want to correct our VCO based on the AVERAGE value of UP-DOWN, because that's the purpose of our PD system. However, in our attempt to convert UP-DOWN from digital to analog, we thought that it would be a good idea to do this by shoving current in/out of a Cap based on UP-DOWN signals (that's where the Charge Pump came from) and in doing so we built this circuit which what it actually does is to INTEGRATE UP-DOWN, not to CALCULATE THE AVERAGE OF UP-DOWN. That's us being strict here. BUT still, in real life this won't be a problem, because **if we integrate over a long enough period of time, then the integral IS the average.** That's the thing here. Yes, the integral of UP-DOWN is NOT the average of UP-DOWN but if we ZOOM OUT and we only evaluate the integral over relatively long segments of time (and I will define relatively in a second) then the integral is a good approximation of the average. In fact, if you were reset your integrator to 0V, then start feeding it with the stream of UP-DOWN pulses, then wait for a huuuuuuuuuge period of time, letting your integrator integrate during that long long period of time, and after such long long period of time you look at the integrator's output, then at that exact moment the integrator's output will be a number which is pretty much exactly the average value of UP-DOWN during the long long period of time. So, what is a "relatively long" period of time here? Simply a period of time that is much larger than the reference clock period, since that is the sampling frequency of UP-DOWN or the frequency at which UP-DOWN updates itself to a new value.
+
+Anyway, all of this was just to justify that the integral of UP-DOWN that the Charge Pump gives us will be good enough to be used to control the VCO.
+
+The following figure tries to give an intuition as to why the integral of UP-DOWN is a proxy for the average of UP-DOWN, when we zoom out.
+
+![image](https://user-images.githubusercontent.com/95447782/164786148-07a70de3-2adb-4785-8060-abe81c83a3ce.png)
+
+
+Anyway, whether that expression is the average of UP-DOWN differential signal or just an approximation, that´s ok as long as we are aware of that, what matters is that we have this integrative behaviour coming out of the Charge Pump, and that's ok, we recognize that and we insert that into our model.
+
+**Hence our model of the PD+CP looks like the error block followed by a couple of gain blocks followed by an integrator which is due to the Charge Pump**. That's not bad, remember from the "1 integrator" section that we saw that an integrator right after the error signal can have this effect that it tries to force the error signal to be tiny and that is a good thing, at least in principle. But we also saw that 2 integrators with nothing else (CP+VCO) will be unstable. So that's why we need the Loop Filter.
+
+![image](https://user-images.githubusercontent.com/95447782/164786230-96adb1a9-5397-43d1-b673-0242c514b485.png)
+
+
+2 integrators with nothing else (CP+VCO) will be unstable. So that's why we need the Loop Filter.
+
+![image](https://user-images.githubusercontent.com/95447782/164786268-d2676c21-d361-4a2d-8bca-7798f066ab9b.png)
+
+
+Finally, we are going to develop the Loop Filter.
+
+There are a few options, various ways to stabilize this system.
+
+One way is to add a zero into the system.
+
+This is the PD+CP we have so far, with no Loop Filter other than the Cap in the Carge Pump:
+
+![image](https://user-images.githubusercontent.com/95447782/164786293-6234025c-0a66-479e-8bbc-864196772969.png)
+
+
+The above figure comes from the previous model that we have developed for the PD+CP ensemble. That's basically a current of "average" value <img src="https://render.githubusercontent.com/render/math?math=\frac{I_o }{2\pi}"> (the "average" and the <img src="https://render.githubusercontent.com/render/math?math={2\pi}"> come from our analysis of the PD gain) and that current is squirted into the Charge Pump cap which is Cx.
+
+Now, the way we add one zero to that is by, instead of squirting the current into a simple cap Cx, we squirt it into a parallel combination of R+C in parallel with Cx.
 
 
