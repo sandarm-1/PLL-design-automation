@@ -21,9 +21,30 @@ Since sin(2pi) = sin(4pi) = etc we could think of it as a sawtooth waveform, but
 ![image](https://user-images.githubusercontent.com/95447782/164770558-0f53ce37-63b7-4031-982a-5a568abdce65.png)
 
 The goal of the system is that <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}"> follows <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> exactly. But since the input signal is a square wave, <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> is a ramp and hence it is constantly moving, i.e. changing value, so therefore we need a "velocity control" system.
+
 If <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> was a static value, or a value that just changes from one static value to another in steps, as in a step function, then for <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}"> to follow <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> we would just need a "position control" system. But this is not the case. For us, <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> is a ramp because the input signal is a square wave.
+
 If <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> had absolutely no phase noise whatsoever, it would be a perfect linear ramp. In the real case where even <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> had some phase noise (even quite small as it's coming from the crystal oscillator) then <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> would be a ramp with slight non-linearity to it, and the point would be that we still want <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}"> to mimic <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> so that the phase noise of <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}"> would be exactly the same as that of <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}">, thus getting great phase noise performance on <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}">.
 
 
 
+## How to make a velocity control system
+
+First let's see things that don't work as a velocity control system.
+
+Even before that, let's see what is a position control system and what isn't.
+
+In a position control system, we want to track a position which is static, not changing all the time. At most, the position may just change from one static value to another in steps, but it's not like it's changing constantly. It just takes one static position value, and it stays there for a while, then eventually it may change to another position.
+
+### System with 0 integrators:
+Let's see if we can implement such position control system with a simple feedback system like this:
+
+![image](https://user-images.githubusercontent.com/95447782/164772597-d0d38d2b-4d5c-49e1-b860-9ea30bb2d257.png)
+
+In this system, the open loop gain (feed forward path) is A, then we have a feedback with no gain in it (feedback gain is 1) and it's a negative feedback.
+
+The error signal after the summing block is <img src="https://render.githubusercontent.com/render/math?math=\epsilon = Input-Output">. But <img src="https://render.githubusercontent.com/render/math?math=Output = A*\epsilon"> so <img src="https://render.githubusercontent.com/render/math?math=\epsilon = Output/A"> and hence <img src="https://render.githubusercontent.com/render/math?math=\[Output/Input=\frac{A}{1+A}\]">  is the closed loop transfer function.
+
+
+### 
 
