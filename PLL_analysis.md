@@ -459,7 +459,25 @@ Where are the 2 poles?
 hence  <img src="https://render.githubusercontent.com/render/math?math=s=+/-j\sqrt{A}">
 
 And we know a system with 2 poles on top of the jw axis like that will be UNSTABLE. Always unstable, or unconditionally unstable.
-Remember that Barkhausen's criterion for INSTABILITY (oscillation) is that a complex pole pair must be placed on the imaginary axis of the complex frequency plane for steady state oscillations to take place, and the loop gain is unity  <img src="https://render.githubusercontent.com/render/math?math=|\beta A|=1">. In this case we see that the loop gain <img src="https://render.githubusercontent.com/render/math?math=|\beta A|=1"> because when  then s^2=-A so A/s^2  is -1 hence <img src="https://render.githubusercontent.com/render/math?math=|\beta A|=1">.
+Remember that Barkhausen's criterion for INSTABILITY (oscillation) is that a complex pole pair must be placed on the imaginary axis of the complex frequency plane for steady state oscillations to take place, and the loop gain is unity  <img src="https://render.githubusercontent.com/render/math?math=|\beta A|=1">. In this case we see that the loop gain <img src="https://render.githubusercontent.com/render/math?math=|\beta A|=1"> because when <img src="https://render.githubusercontent.com/render/math?math=s=+/-j*sqrt(A)"> then s^2=-A so A/s^2  is -1 hence <img src="https://render.githubusercontent.com/render/math?math=|\beta A|=1">.
 
 Conclusion from this is simply that we can't just concatenate 2 integrators and expect to get a "velocity control" system. This is why we need a LOOP FILTER in order to complete our PLL system.
+
+
+## The Loop Filter
+
+We have reached the point that we know that our PLL system has to look like this. I mean, it has to look like this means that we have a VCO for sure, which is an integrator, we have a Phase Detector PD, which is the error block at the feedback point, and then we have reached the conclusion that we need an extra block, which we will call the "loop filter", which is the extra component required to finally construct the desired "velocity control" system in a way that the whole thing is stable and actually performs "velocity control" which is essentially the ability of the output to follow accurately an input that looks like a ramp.
+
+![image](https://user-images.githubusercontent.com/95447782/164781821-8234a1cb-3904-4efd-a429-85fd2d01509f.png)
+
+
+Before we talk about the loop filter, let's just say that the PD looks as follows, and the gain of the PD is <img src="https://render.githubusercontent.com/render/math?math=\frac{\mathrm{VDD}}{2\pi }">
+. Why is the PD gain <img src="https://render.githubusercontent.com/render/math?math=\frac{\mathrm{VDD}}{2\pi }">
+? Because if Vout is lagging behing Vref by half a period, as seen in the figure, that is equivalent to a phase difference of 90 degrees, i.e. <img src="https://render.githubusercontent.com/render/math?math=\phi_{\mathrm{ref}} -\phi_{\mathrm{out}} =\frac{\pi }{2}">
+ and in that situation we see that, because of how the PD is implemented, the "UP" signal pulses up for a quarter of the time, i.e. 25% of the time, hence its average value is VDD/4. And similarly, in the opposite case, if the Vout signal happens to lead Vref by 90 degrees, then <img src="https://render.githubusercontent.com/render/math?math=\phi_{\textrm{ref}} -\phi_{\textrm{out}} =-\frac{\pi }{2}">
+ and in that situation the "DOWN" signal will pulse up a quarter of the time, hence its average value will be VDD/4. Then, overall, differentially, the "UP - DOWN" signal will have an overall range of VDD/2 for an input phase difference range of <img src="https://render.githubusercontent.com/render/math?math=\frac{\pi }{2}-\left(-\frac{\pi }{2}\right)=\pi">
+, so the overall gain of the PD defined as Output/Input is <img src="https://render.githubusercontent.com/render/math?math=\mathrm{PD}\_\mathrm{gain}=\frac{\left(\frac{\mathrm{VDD}}{2}\right)}{\pi }=\frac{\mathrm{VDD}}{2\pi}">
+
+
+
 
