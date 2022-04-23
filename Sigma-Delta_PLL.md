@@ -68,8 +68,6 @@ Here we calculate that case:
 
 In our case we are going to take the output AFTER the register (y) just because it suits us best and the math will work out to something nicer.
 
-In our case we are going to take the output AFTER the register (y) just because it suits us best and the math will work out to something nicer.
-
 Then the overall Sigma-Delta loop transfer function is:
 
 ![image](https://user-images.githubusercontent.com/95447782/164895111-90f1b380-4eb5-4bb9-8051-d33dd06cf17f.png)
