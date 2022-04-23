@@ -240,5 +240,54 @@ In order to calculate the Sigma-Delta output stream what we do is we replace the
 
 Overall we get that the output of the Sigma-Delta is, for an input of 0.1 (for example) the same average value 0.1, but PWM-modulated which is what we wanted.
 
+HOWEVER we find that AGAIN **this particular Sigma-Delta STILL HAS PERIODICITY to its output. And that's because this is a FIRST order** Sigma-Delta. **If you replace it by a 2nd order (just change the H by a 2nd order one), the periodicity goes away.**
 
+We have made this Sigma-Delta 1st order just to see how this works.
+
+If you leave it as 1st order, you will get spurious frequencies for the same reason as before, due to the periodicity and the spectrum would look like this.
+
+![image](https://user-images.githubusercontent.com/95447782/164895293-74ecd603-3fa7-4ad0-a9b8-835b70b613a3.png)
+
+
+But as soon as you make it 2nd order then the spurious tones go away (because of no periodicity) and you also get more slope in the noise shaping (40dB/dec instead of 20).
+
+![image](https://user-images.githubusercontent.com/95447782/164895299-51c71d23-4d10-4139-a993-01e72d5767a1.png)
+
+
+So for PLLs you don't need a very fancy Sigma-Delta, you can just use a 2nd order one made with integrators, that's all.
+
+That spectrum is the spectrum of the "CONTROL" signal that governs whether the fractional divider should divide by 90 or by 91, in order to get 90.1 division and hence achieve 901MHz out.
+
+![image](https://user-images.githubusercontent.com/95447782/164895318-88e33906-ea39-4018-9d3e-a2c29b4a7326.png)
+
+
+Now if that is the spectrum at the "CONTROL" wire, what is the spectrum at the VCO output? Since that's what we care about.
+
+The VCO output will just look like a modulated version of that signal, which is the spectrum centered around fout and the quantization noise on the sides of it.
+
+![image](https://user-images.githubusercontent.com/95447782/164895330-870a9635-e488-44c2-9784-563080854360.png)
+
+
+Within the Loop Bandwidth (magenta arrows), the output of the VCO will mimic the phase noise of the reference oscillator.
+
+Outside the Loop Bandwidth, the VCO phase noise will appear.
+
+Knowing this, what should be the REQUIREMENT for our Sigma-Delta modulator spectrum shape?
+
+The answer is we should keep the Sigma-Delta output noise as low as possible within the Loop Bandwidth, so we need to design our Sigma-Delta modulator to have a certain signal to noise ratio (a small enough noise) within that Loop Bandwidth.
+
+![image](https://user-images.githubusercontent.com/95447782/164895341-7d92e7ee-dfcd-4e20-b94c-7c65dce33d3a.png)
+
+
+In the example where Loop Bandwidth is 1MHz, it means that in the 0 to 1MHz region we need to keep the Sigma-Delta modulator to be low noise enough. Outside of that, i.e. higher than 1MHz, the Sigma-Delta noise can be high, we don't care.
+
+So that makes the Sigma-Delta modulator a bit less simple, maybe it can't be as simple as 2nd order like we said before, maybe we need to make it 3rd order for this reason, or maybe we need to insert a zero. But this is what may make the Sigma-Delta a bit more complex. If you have to make your H 3rd order then you will need to burn more power in your H digital filter, also more area in it, the implementation will have to include more adders, multipliers, maybe you can implement it with just shift operations, you will need more bits inside it so it's precise, in summary you will have to burn area, power and man hours in the Sigma-Delta modulator for this reason.
+
+A **rough idea of how much SNR you need in the Sigma-Delta modulator** is the following, and it's just a rough idea, the maths to prove it are quite involved, but just as a rough finger in the air estimate:
+
+* if you need less than 100dBc/Hz @ 1MHz offset on your VCO output, then in the Sigma-Delta you need 100dB less noise (quantization noise) than signal at 1MHz. (rough estimate)
+
+But as a result of all of this, you will have a 3rd order Sigma-Delta modulator which will not only be free of spurs (because it has no periodicity) but also it will have low enough noise within the Loop Bandwidth so your VCO output will be clean enough within the Loop Bandwidth, and your Loop Bandwidth will be larger thanks to your fractional division.
+
+Other than that, if you just wanted to put together a PLL loop quickly and see basic functionality, 2nd order Sigma-Delta will work.
 
