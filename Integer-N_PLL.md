@@ -108,6 +108,38 @@ These trade-offs happen in the Integer-N division.
 Can we make our life easier with a different topology? **That's the fractional-N topology**.
 
 
-## Channel "raster" in the Integer-N synthesizer
+## Channel raster in the Integer-N synthesizer
+
+One last thing before moving on:
+
+In the Integer-N frequency synthesizer, the input reference clock IS EQUAL TO THE CHANNEL SPACING or channel raster. That means that we want a system that:
+
+* Produces an output frequency between 900MHz up to 1.1GHz in steps of 1MHz.
+* When the base station asks you to go to a new frequency (channel) you change the value of N and that sets the output frequency to a new channel.
+* **Channels are spaced out 1MHz apart. That's the channel raster.**
+* If you set N = 900, you get 900MHz, if N=901 you get 901MHz, if N=1100 you get 1.1GHz. Output frequency changes in steps of 1MHz which is the channel separation.
+* **The input reference frequency is the channel raster (1MHz).**
+
+![image](https://user-images.githubusercontent.com/95447782/164894164-3c3abd1b-32c3-45f9-9533-f6afe40fa81f.png)
+
+
+But the problem with this arrangement (integer-N) is that:
+* The reference oscillator is the channel raster (1MHz) 
+* Since what goes into the PD is at fref, spurs come out at multiples of fref, i.e. at the channel spacing.
+* At every channel you get a spurious tone (bad).
+* The loop bandwidth is limited to a fraction of the channel spacing (fref). Can't make it higher than that.
+
+
+**What if N doesn't have to be an integer? If N can be fractional:**
+* If N can be fractional, like instead of 900, 901, 902 we can divide by 90.0, 90.1, 90.2...
+* Then the reference oscillator doesn't have to be 1MHz (the channel spacing). Because we make reference oscillator something like 10MHz, and we still get 1MHz steps at the output, thanks to the multiplication by decimals, like x90.1 gives 901MHz out, x90.2 gives 902MHz, etc.
+
+
+The benefit is:
+* The reference oscillator is no longer the channel separation.
+* The Loop Bandwidth upper limit is 1/10 of what goes into the PD. And since now we have 10MHz going into the PD instead of 1MHz, the Loop Bandwidth upper limit is higher. Before, upper limit for Loop Bandwidth was 1/10 of 1MHz, now it's 1/10 of 10MHz. We can therefore make the Loop Bandwidth 10x larger. Thus we get the benefits of larger loop bandwidth (better phase noise at the output, better settling time) WITHOUT bigger spurs, since spurs are higher frequency than before (10x higher), they are attenuated more by the Low pass filter (10x more attenuation) so overall they are the same. The VCO will have lower requirements in terms of its free-running VCO phase noise so it will be easier to design.
+* POSSIBLE BENEFIT, (but we are not sure yet, this will be analyzed in next section): Since what goes into the PD is 10MHz instead of 1MHz, the spurs come out at multiples of 10MHz, not at multiples of 1MHz. So we won't get a spur tone in every channel, but every 10 channels. This is still a QUESTION MARK, this will ONLY BE TRUE if the FEEDBACK SIGNAL (divided-down version of the output) is a signal that toggles at 10MHz, and we still don't know if this is the case, as the divide-by-fraction block is still a black box to us, we don't know the exact implementation of it. If its output is something that toggles at 10MHz, then yes this benefit will be true, otherwise not really, the spurs will come out at whatever is the periodicity of the PD output.
+
+That will be the fractional-N synthesizer.
 
 
