@@ -315,6 +315,11 @@ For that, we put a ramp at the input and see if the output can track it accurate
 
 Let's do it:
 
+>    **Matlab script:**
+>
+>    This [Matlab script](matlab/step_response_and_ramp_response.m) can be used to calculate the step response and ramp response of a system with one single integrator in the feed-forward path.
+>    
+
 
 ```matlab
 in_ramp = 1/(s^2);
@@ -581,6 +586,11 @@ That set of poles and zeroes looks like this in the pole-zero diagram:
 
 Let's do this poles & zeroes calculation in Matlab, so we can automate this for more complex networks in the future:
 
+>    **Matlab script:**
+>
+>    This [Matlab script](matlab/impedance_and_poles_of_RCCx_loop_filter.m) can be used to calculate the impedance and pole locations of a 2nd order loop filter.
+>   
+
 ```matlab
 %======================================================================
 %==== First, a simple RC-series and RC-parallel impedance calculation:
@@ -772,3 +782,4 @@ TF = simplify(TF)
 % And in less lines of code.
 % Both solutions work.
 ```
+
