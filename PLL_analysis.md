@@ -482,7 +482,8 @@ Before we talk about the loop filter, let's just say that the PD looks as follow
 , so the overall gain of the PD defined as Output/Input is <img src="https://render.githubusercontent.com/render/math?math=\mathrm{PD}\_\mathrm{gain}=\frac{\left(\frac{\mathrm{VDD}}{2}\right)}{\pi }=\frac{\mathrm{VDD}}{2\pi}">
 
 
-![image](https://user-images.githubusercontent.com/95447782/164785641-0eddef10-005a-4260-aa76-f138c7207547.png)
+![image](https://user-images.githubusercontent.com/95447782/164889651-bcf4ccfc-ec8a-4460-8dfc-df55f97a9bff.png)
+
 
 So the model of the PD is this:
 
@@ -678,3 +679,16 @@ With Matlab we got that:
 *         -1/(C*R) --> This is the zero at -1/RC
 
 With hand calculation we got the same thing:
+
+
+
+And the visual representation of those poles and zeroes in the complex frequency plane (pole/zero diagram) is:
+
+![image](https://user-images.githubusercontent.com/95447782/164889670-7253b8c3-b207-4d5c-a5ca-093541ea2b34.png)
+
+
+If we now insert this type of Loop Filter into our system's model, now we have:
+
+![image](https://user-images.githubusercontent.com/95447782/164889748-ac8a0df8-0baa-4a4b-b98f-b9279c6d880a.png)
+
+
