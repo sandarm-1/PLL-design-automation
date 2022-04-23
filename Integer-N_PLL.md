@@ -66,7 +66,8 @@ The spurs are a consequence of:
 * But the good news is that the Loop Bandwidth is 1/10 of fref and within that bandwidth the VCO output will mimic the reference oscillator hence the VCO out will be nice and clean within that band. Outside of that band, there will be the spurs. **So, what is better to maximize spur rejection, LARGE Loop Bandwidth or SMALL loop bandwidth?**. The reasoning is simple: the spurs come at fref and multiples of fref, the Loop BW is 1/10 of fref, hence by definition the spurs are always above the filter's cuttoff, i.e. the filter always attenuates the spurs (the spurs are just voltage glitches in Vctrl), the question is how much, and since it's a low pass filter, lower cuttoff frequency attenuates the spurs more (remember spurs are just voltage glitches in Vctrl), so LOWER Loop Bandwidth attenuates spurs more, i.e. it makes the voltage glitches smaller. Since the magnitude of the voltage glitches is <img src="https://render.githubusercontent.com/render/math?math=\Delta V=\frac{\delta {*I}_o }{C+Cx}"> , making C+Cx larger reduces the voltage spikes, that is REDUCING the Loop Bandwidth, since the Loop Bandwidth is equal to the 2nd pole of the Loop Filter which is 1/R*C_series_with_Cx.
 
 
-![image](https://user-images.githubusercontent.com/95447782/164892180-4257d237-9c2e-44da-a318-11b7bee17f4f.png)
+![image](https://user-images.githubusercontent.com/95447782/164892283-cdd5929d-5afd-4d41-aa2b-6df55c2c5759.png)
+
 
 
 
@@ -82,3 +83,31 @@ A bit more reasoning about this:
 * So, if we double the Caps, we half the Loop Bandwidth, then the size of these voltage spikes becomes half.
 
 However, **the trade-off is** that while REDUCING the Loop BW provides better spur magnitude reduction (better spur rejection), the downside is that we know that the VCO output mimics the reference oscillator over a smaller range of frequencies, i.e. over a narrower band in the spectrum plot, and that means the high VCO phase noise is present over more frequencies at the PLL output.
+
+
+![image](https://user-images.githubusercontent.com/95447782/164892301-502b3bc1-6d69-429f-acd1-9773f9d51131.png)
+
+
+
+Overall, the trade-offs are:
+
+**Better spur attenuation:**
+* Reduce the Loop BW
+* Make better matching of CP currents
+* Make lower gate delay and flip flop reset delay
+
+**Better PLL output phase noise:**
+* More Loop BW
+
+**Better settling time:**
+* More Loop BW
+
+
+These trade-offs happen in the Integer-N division.
+
+Can we make our life easier with a different topology? **That's the fractional-N topology**.
+
+
+## Channel "raster" in the Integer-N synthesizer
+
+
