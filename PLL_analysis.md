@@ -783,3 +783,68 @@ TF = simplify(TF)
 % Both solutions work.
 ```
 
+Let's stop one second at this point. Check the Matlab code above. The nice thing about the Matlab code above is that it calculates the closed loop transfer function (TF) correctly. It gives the same Transfer Function as the manual calculation.
+
+![image](https://user-images.githubusercontent.com/95447782/164890621-d765669f-9012-440e-ac73-f9c16b830d47.png)
+
+
+That's a pretty decent result, we were able to get the same thing from Matlab Symbolic Math toolbox and by hand calculation. It's useful for future automation and quick iteration.
+
+Ok, at this point, we have a transfer function calculated.
+
+What we still don't know for sure is if the system is stable or not.
+
+To prove stability, we need to estimate where the poles are for this transfer function.
+
+```matlab
+%Let's try to get poles & zeroes for the whole system:
+%In the previous step we got a transfer function TF.
+%In particular, we got:
+% TF =
+%  (Io*Kvco*(C*R*s + 1))/(Io*Kvco + 2*C*pi*s^2 + 2*Cx*pi*s^2 + 2*C*Cx*R*pi*s^3 + C*Io*Kvco*R*s)
+[N,D] = numden(TF);
+%The above gives:
+% N = Io*Kvco*(C*R*s + 1)
+% D = Io*Kvco + 2*C*pi*s^2 + 2*Cx*pi*s^2 + 2*C*Cx*R*pi*s^3 + C*Io*Kvco*R*s
+% Which stacks up.
+poles = solve(D==0,s)
+zeroes = solve(N==0,s)
+%The above gives:
+% poles =
+% 
+% root(Io*Kvco + 2*C*pi*z^2 + 2*Cx*pi*z^2 + C*Io*Kvco*R*z + 2*C*Cx*R*pi*z^3, z, 1)
+% root(Io*Kvco + 2*C*pi*z^2 + 2*Cx*pi*z^2 + C*Io*Kvco*R*z + 2*C*Cx*R*pi*z^3, z, 2)
+% root(Io*Kvco + 2*C*pi*z^2 + 2*Cx*pi*z^2 + C*Io*Kvco*R*z + 2*C*Cx*R*pi*z^3, z, 3)
+%
+% zeroes = 
+% -1/(C*R)
+
+% The above didn't really help, as the poles answer we got is useless, it
+% didn't calculate the poles for us really.
+
+%See this link to get explicit poles values:
+% https://uk.mathworks.com/help/symbolic/sym.root.html#:~:text=root(%20p%20%2C%20x%20)%20returns,the%20roots%20of%20the%20polynomial.
+
+Poles_explicit = solve(D==0,s,'MaxDegree',3)
+%The above gives some explicit poles (very long expressions).
+
+% See below, where we do the simplification that C=10*Cx which simplifies it
+% a bit.
+
+```
+
+The above attempt (direct calculation of poles of the TF as roots of the denominator) didn't help.
+
+Let's try to do it with this observation: `C1 = (C*Cx)/(C+Cx)`.
+![image](https://user-images.githubusercontent.com/95447782/164890690-ac1c0f63-e27b-4463-ac3e-69bb6a9e5425.png)
+
+Obeservations are:
+* C1 = C in series with Cx, it's always smaller than C and Cx independently
+* If Cx is much smaller than C (let's say Cx = C/10 = 0.1*C) then we can say that:
+* C1~= Cx
+* C= 10*Cx.
+* C+Cx=1.1C~=C
+* C*Cx = C*0.1C=0.1*C^2
+* With the simplification that C~=Cx, our TF comes out a bit simpler, as follows:
+
+
