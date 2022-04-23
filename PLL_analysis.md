@@ -987,3 +987,115 @@ The Bode plot shape that we expect to see from this particular Loop Filter (R+C 
 
 And **THIS** is called the **LOOP BANDWIDTH**:
 
+
+Why is that called the **LOOP BANDWIDTH**? Because at that frequency (the pole at -1/R*C_series_with_Cx) we will get 3dB less gain (magnitude of the Loop Filter impedance out vs in) than the flat area.
+
+And the next important question is not only what is the loop bandwidth but also **how large can (should) the loop bandwidth be**?
+
+To answer this question, notice that the output voltage of the Loop Filter is the Vctrl that goes straight into the VCO. Now, both the VCO and the input reference clock are switching at the input clock reference frequency (we have unitary feedback with no dividers at the moment). That means their voltage is swinging rail to rail from 0V to VDD at the input reference frequency. And the PD "updates" or "refreshes" its output every input clock cycle, that is, the PD output pulses "UP" and "DOWN" are updated/refreshed/sampled at the input frequency.
+
+Remember when we did the Charge Pump, we noticed that the Charge Pump does an INTEGRATION rather than an AVERAGE of the "UP-DOWN" differential signal, BUT we wanted a circuit that extracted the AVERAGE, and that controlled the VCO based on the AVERAGE of "UP-DOWN" differential signal. And at that time we said that, as long as the Charge Pump output is "refreshed" at a much slower rate than the PD output toggles, then the INTEGRATION performed by the Charge Pump was a valid approximation of the AVERAGE which is what we wanted. And we said that we wanted the Charge Pump output to change about **10 times slower than the speed at which the PD outputs toggled, which is the input frequency.**
+
+Similarly, now that we have the output of the Charge Pump going into the Loop Filter, **we want the output of the loop filter to toggle slow enough.** For example, we wouldn't want the output of the Loop Filter to "update" or "follow" the input frequency, and that means we don't want the Loop Filter to let the input frequency go through to its output, and that is the same as saying that we want the Loop Filter to filter out the rapid changes in its input voltage, and by rapid we mean changes that happen as fast as the input frequency, or as often as the input clock voltage toggles. It's also the same thing as saying that **we want the Loop Filter to have a bandwidth that is not too high, a loop bandwidth that is let's say 10 times smaller than the input frequency.**
+
+Since the Loop Filter is a low pass filter, we want it to pass through low frequencies and cut off frequencies above a certain threshold. And that threshold, that frequency above which the Loop Filter starts to attenuate is by definition the Low Pass Filter Bandwidth, shortened to "Loop Bandwidth" when the Low Pass Filter in question is the Loop Filter of a PLL.
+
+**Another way of looking at it** (at why do we have this rule of thumb that the "Loop Bandwidth" should be 10x smaller than the input frequency) is because **we want a control system that is reactive, agile in correcting the VCO frequency**, but we don't want something that correct the VCO frequency absolutely every period of oscillation of the VCO. We want something that at least waits for 10 periods of the VCO, looks at what was the VCO speed during those 10 cycles, and then with that information it makes a correction.
+
+Yet another way of looking at it (or something that actually happens) is that if we have a Loop Filter that is so reactive that its output can toggle as fast as the input frequency, then it will move around the VCO frequency very often, so often that the VCO frequency will not stay still even for 10 periods of the input frequency, and therefore the Charge Pump approximation (INTEGRAL ~ AVERAGE) will no longer be a valid approximation.
+
+Summary from the above: **Rule of thumb is that the Loop Filter's Loop Bandwidth should be 10x smaller than the input frequency.**
+
+Having said that, **why would we want to have large Loop Bandwidth in the Loop Filter? What is the benefit of a large Loop Bandwidth?**
+
+We have seen that a small loop bandwidth is desirable (smaller than 10x the input frequency) but then shall we make it really really small bandwidth and forget about it? Well remember **the whole point of the PLL in the first place is that we want to TRACK the phase characteristic of the external Xtal oscillator, because that has greater phase noise performance than any on-chip oscillator that we can make**. So, a LARGE bandwidth in our Loop Filter means that the output of the Loop Filter will TRACK or FOLLOW the input reference changes very accurately, from the slowest changes to the fastest changes (highest frequency components of the input changes). And that is good because it means that at the output of the Loop Filter (which is what drives the VCO) we will have a signal that follows accurately the changes and nuances in the input signal, even the fastest ones, therefore controlling the VCO accurately and quickly so it tracks accurately the input signal (which is the phase of the reference oscillator). It will be like "micro-managing" the VCO, **forcing it to follow the input signal very closely and therefore the phase noise characteristic at the output of the VCO will mimic that of the input reference oscillator. That's why high loop bandwidth is desirable.** But the upper limit is the rule of thumb mentioned before, at most one tenth the input frequency, not more, or we will break the system for the reasons explained before.
+
+In the following figure, if the red curve is the reference oscillator phase noise characteristic (good and narrow), the blue curve is the free-running VCO phase noise (wider hence quite bad in comparison with the reference oscillator). The magenta lines denote the width of the loop filter bandwidth, i.e. the loop bandwidth. Then inside that loop bandwidth segment the PLL output phase noise will look like the reference, and outside of that bandwidth it will look like the free-running VCO. That's why we want as high loop bandwidth as possible, with an upper limit of one tenth of the input frequency.
+
+**So, in summary, we should always aim for 1/10 exactly.**
+
+![image](https://user-images.githubusercontent.com/95447782/164891031-ebcae0c1-5f98-420a-817f-9781334fc4a7.png)
+
+
+Now, let's go ahead and plug in some example numbers. These are (arbitrary) values:
+* R=1K
+* C=6pF
+* Cx=0.6pF
+
+```matlab
+clear all
+%================================================
+% Same thing as before, now for Loop Filter made of parallel combination of Cx
+% with a series combination of R+C:
+clear all;
+syms R C Cx s;
+
+assignin('base','R',1e3)
+assignin('base','C',6e-12)
+assignin('base','Cx',0.6e-12)
+
+Zr = R;
+Zc = capz(C,s);
+Zcx = capz(Cx,s);
+Zloop_filt = parallelz(Zcx,seriesz(Zr,Zc))
+Zloop_filt = simplify(Zloop_filt)
+[N,D] = numden(Zloop_filt)
+%From this we can get the poles as the roots of the denominator:
+poles = solve(D==0,s)
+zeroes = solve(N==0,s)
+%That gives us a few specific values of zeroes and poles:
+% poles = 
+%-5057235284857433424875349213774427543568384/2758491973558599926925485443165625
+%                                                                              0
+% zeroes = 
+% -77371252455336267181195264/464227514732017625
+
+%We see a pole at 0 which is good, but the numbers are too long to make
+%sense.
+% Therefore we plot them with zplane()
+zplane(zeroes,poles)
+
+%That was enough to plot the zeroes and poles.
+%Now I do this extra line here, in order to plot the Bode of Zloop_filt later:
+s = tf('s')
+%And I recalculate Zloop_filt with that 's' as a tf object, so that Zloop_filt will 
+% also be a 'tf' object, so I can use the Bode function:
+Zr = R;
+Zc = capz(C,s);
+Zcx = capz(Cx,s);
+Zloop_filt = parallelz(Zcx,seriesz(Zr,Zc))
+%The above gives:
+%Zloop_filt =
+% 
+%   2.16e-32 s^3 + 3.6e-24 s^2
+%  -----------------------------
+%  1.296e-44 s^4 + 2.376e-35 s^3
+%Then let's Bode it:
+subplot(2,1,1)
+bode(Zloop_filt)                                               
+[mag,phase,wout] = bode(Zloop_filt);
+subplot(2,1,2)
+pzplot(Zloop_filt)
+%=====================================================
+```
+
+This is what we got in this example:
+
+![image](https://user-images.githubusercontent.com/95447782/164891074-c235989f-61b9-449c-91bc-6f7d39d66925.png)
+
+
+What we get from the above example is:
+
+![image](https://user-images.githubusercontent.com/95447782/164891079-5bec5085-7bdf-4e43-9b66-a8d4dd2e3c6d.png)
+
+
+And yes it does have the general shape that we were expecting from manual calculation, which is -20dB/dec from the beginning due to the pole at 0, then once it reaches the zero at -1/RC it gets +20dB/dec so it levels off, then when it gets to the 2nd pole which is at -1/R*C_series_with_Cx it gets -20dB/dec again.
+
+
+Note: **Don't confuse the poles of the Loop Filter with the poles of the whole PLL!**
+* Poles of the Loop Filter (R+C || Cx) --> From Impedance of (R+C || Cx)
+* Poles of the whole PLL --> From transfer function of whole PLL
+
+## Loop Filter design example
+
+
