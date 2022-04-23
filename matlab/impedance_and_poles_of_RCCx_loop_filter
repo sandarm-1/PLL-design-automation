@@ -1,0 +1,71 @@
+%======================================================================
+%==== First, a simple RC-series and RC-parallel impedance calculation:
+syms R C s;
+%We input the individual network elements:
+Zr = R;
+Zc = 1/(s*C);
+
+%We explicit how the elements are connected (in series, in parallel, or a
+%combination thereof).
+%In this case we do R and C are in series.
+%Zrc_series = Zr+Zc
+Zrc_series = seriesz(Zr,Zc)
+P = partfrac(Zrc_series, s)
+C = children(P);
+C = [C{:}];
+[N,D] = numden(C)
+poles = solve(D==0,s)
+zeroes = solve(N==0,s)
+%The above gives:
+%Zrc_series = R + 1/(C*s)
+%P = R + 1/(C*s)
+%N = [R, 1]
+%D = [1, C*s]
+% poles = empty
+% zeroes = empty
+
+
+%Same thing but parallel:
+Zrc_parallel = parallelz(Zr,Zc)
+P = partfrac(Zrc_parallel, s)
+C = children(P);
+C = [C{:}];
+[N,D] = numden(C)
+poles = solve(D==0,s)
+zeroes = solve(N==0,s)
+%The above gives:
+%Zrc_parallel = R/(C*s*(R + 1/(C*s)))
+%P = R/(C*R*s + 1)
+%N = [R, 1]
+%D = [1, C*R*s + 1]
+% poles = empty
+% zeroes = empty
+%======================================================================
+
+
+
+%=====================================================
+%==========LOOP FILTER TOTAL IMPEDANCE AND POLES CALCULATION
+% Same thing as before, now for Loop Filter made of parallel combination of Cx
+% with a series combination of R+C:
+clear all;
+syms R C Cx s;
+Zr = R;
+Zc = capz(C,s);
+Zcx = capz(Cx,s);
+Zloop_filt = parallelz(Zcx,seriesz(Zr,Zc))
+Zloop_filt = simplify(Zloop_filt)
+%From the above we get:
+%Zloop_filt = (C*R*s + 1)/(s*(C + Cx + C*Cx*R*s))
+[N,D] = numden(Zloop_filt)
+%From this we can get the poles as the roots of the denominator:
+poles = solve(D==0,s)
+zeroes = solve(N==0,s)
+%That gives us:
+% poles = 
+%                 0
+% -(C + Cx)/(C*Cx*R)
+% zeroes = 
+% -1/(C*R)
+%The above poles & zeroes actually match the hand calculation.
+%=====================================================
