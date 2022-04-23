@@ -18,7 +18,8 @@ Input phase looks like a ramp, and we need a velocity control system
 This is the first important point. Input phase looks like a ramp.
 Since sin(2pi) = sin(4pi) = etc we could think of it as a sawtooth waveform, but it's not necessary.
 
-![image](https://user-images.githubusercontent.com/95447782/164770558-0f53ce37-63b7-4031-982a-5a568abdce65.png)
+![redone_images_1](https://user-images.githubusercontent.com/95447782/164888730-0d3be151-9a79-4ef4-8b25-c25865e98fb4.jpg)
+
 
 The goal of the system is that <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}"> follows <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> exactly. But since the input signal is a square wave, <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> is a ramp and hence it is constantly moving, i.e. changing value, so therefore we need a "velocity control" system.
 
