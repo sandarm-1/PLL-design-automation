@@ -686,6 +686,8 @@ And the visual representation of those poles and zeroes in the complex frequency
 
 ![image](https://user-images.githubusercontent.com/95447782/164889670-7253b8c3-b207-4d5c-a5ca-093541ea2b34.png)
 
+<img src=https://user-images.githubusercontent.com/95447782/164889670-7253b8c3-b207-4d5c-a5ca-093541ea2b34.png alt="" width="200">
+
 
 If we now insert this type of Loop Filter into our system's model, now we have:
 
