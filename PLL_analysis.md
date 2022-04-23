@@ -18,7 +18,8 @@ Input phase looks like a ramp, and we need a velocity control system
 This is the first important point. Input phase looks like a ramp.
 Since sin(2pi) = sin(4pi) = etc we could think of it as a sawtooth waveform, but it's not necessary.
 
-![redone_images_1](https://user-images.githubusercontent.com/95447782/164888730-0d3be151-9a79-4ef4-8b25-c25865e98fb4.jpg)
+![redone_images_1](https://user-images.githubusercontent.com/95447782/164889172-d1af919b-8b64-46d9-ae94-ce4725208386.jpg)
+
 
 
 The goal of the system is that <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}"> follows <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> exactly. But since the input signal is a square wave, <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}"> is a ramp and hence it is constantly moving, i.e. changing value, so therefore we need a "velocity control" system.
@@ -40,7 +41,8 @@ In a position control system, we want to track a position which is static, not c
 ### System with 0 integrators:
 Let's see if we can implement such position control system with a simple feedback system like this:
 
-![image](https://user-images.githubusercontent.com/95447782/164772597-d0d38d2b-4d5c-49e1-b860-9ea30bb2d257.png)
+![image](https://user-images.githubusercontent.com/95447782/164889194-1a555382-90b1-4c6e-9fda-759bf1828971.png)
+
 
 In this system, the open loop gain (feed forward path) is A, then we have a feedback with no gain in it (feedback gain is 1) and it's a negative feedback.
 
