@@ -836,6 +836,7 @@ Poles_explicit = solve(D==0,s,'MaxDegree',3)
 The above attempt (direct calculation of poles of the TF as roots of the denominator) didn't help.
 
 Let's try to do it with this observation: `C1 = (C*Cx)/(C+Cx)`.
+
 ![image](https://user-images.githubusercontent.com/95447782/164890690-ac1c0f63-e27b-4463-ac3e-69bb6a9e5425.png)
 
 Obeservations are:
@@ -845,6 +846,144 @@ Obeservations are:
 * C= 10*Cx.
 * C+Cx=1.1C~=C
 * C*Cx = C*0.1C=0.1*C^2
-* With the simplification that C~=Cx, our TF comes out a bit simpler, as follows:
 
+With the simplification that C~=Cx, our TF comes out a bit simpler, as follows:
+
+```matlab
+clear all
+syms err out in LF_tf VCO_tf beta s;
+syms Kvco R C Cx C1 Io pi;
+assignin('base','beta',1)
+
+% Previously:
+% LF_tf = (Io/(2*pi)) * (1+s*C*R)/(       s*(C+Cx)    *    ( 1 + s*R*(C*Cx/(C+Cx)) )     )
+% Now, doing the simplification C=10*Cx:
+LF_tf = (Io/(2*pi)) * (1+s*C*R)/(       s*C    *    ( 1 + s*R*Cx )     )
+VCO_tf = Kvco/s;
+Open_Loop_Gain = LF_tf * VCO_tf;
+TF = Open_Loop_Gain / (1 + beta*Open_Loop_Gain)
+TF = simplify(TF)
+%The above gives:
+%TF =
+% (Io*Kvco*(C*R*s + 1))/(2*C*Cx*R*pi*s^3 + 2*C*pi*s^2 + C*Io*Kvco*R*s + Io*Kvco)
+%Previously it was:
+% (Io*Kvco*(Cx*R*s + 1))/(2*R*pi*Cx^2*s^3 + 4*pi*Cx*s^2 + Io*Kvco*R*Cx*s + Io*Kvco)
+[N,D] = numden(TF);
+poles = solve(D==0,s);
+zeroes = solve(N==0,s);
+
+%See this link to get explicit poles values:
+% https://uk.mathworks.com/help/symbolic/sym.root.html#:~:text=root(%20p%20%2C%20x%20)%20returns,the%20roots%20of%20the%20polynomial.
+
+Poles_explicit = solve(D==0,s,'MaxDegree',3)
+%The above gives some explicit poles values (still very long expressions): 
+%Poles_explicit = 
+%                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))/(((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3) + (((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3) - 1/(3*Cx*R)
+%- (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))/(2*(((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3)) - (3^(1/2)*((1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))/(((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3) - (((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3))*1i)/2 - (((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3)/2 - 1/(3*Cx*R)
+%- (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))/(2*(((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3)) + (3^(1/2)*((1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))/(((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3) - (((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3))*1i)/2 - (((1/(27*Cx^3*R^3) - (Io*Kvco)/(12*Cx^2*R*pi) + (Io*Kvco)/(4*C*Cx*R*pi))^2 - (1/(9*Cx^2*R^2) - (Io*Kvco)/(6*Cx*pi))^3)^(1/2) - 1/(27*Cx^3*R^3) + (Io*Kvco)/(12*Cx^2*R*pi) - (Io*Kvco)/(4*C*Cx*R*pi))^(1/3)/2 - 1/(3*Cx*R)
+```
+
+At this point, what have we achieved?
+
+Well actually we have calculated the roots of the denominator of the TF and that is the poles.
+
+The expressions are very long but we do have some expressions for the poles.
+
+And those expressions are in terms of a few variables or "knobs":
+* Io, Kvco, R, C, Cx.
+* We just need to make R, C, Cx such that the roots of this polynomial are in the LEFT half plane.
+
+That's all.
+
+Let's see, as an example, a few pole locations based on R, C, Cx values.
+
+As an example, let's use some random specific values:
+* R=1K
+* C=6pF
+* Cx=0.6pF
+* Io = 2mA
+* Kvco = 100MHz/V
+
+```matlab
+clear all
+syms err out in LF_tf VCO_tf beta s;
+syms Kvco R C Cx Io pi;
+assignin('base','beta',1)
+
+assignin('base','R',1e3)
+assignin('base','C',6e-12)
+assignin('base','Cx',0.6e-12)
+assignin('base','Io',2e-3)
+assignin('base','Kvco',100e6)
+assignin('base','pi',3.1416)
+
+% Previously:
+% LF_tf = (Io/(2*pi)) * (1+s*C*R)/(       s*(C+Cx)    *    ( 1 + s*R*(C*Cx/(C+Cx)) )     )
+% Now, doing the simplification C=10*Cx:
+LF_tf = (Io/(2*pi)) * (1+s*C*R)/(       s*C    *    ( 1 + s*R*Cx )     )
+VCO_tf = Kvco/s;
+Open_Loop_Gain = LF_tf * VCO_tf;
+TF = Open_Loop_Gain / (1 + beta*Open_Loop_Gain)
+TF = simplify(TF)
+%The above gives:
+%TF =
+% (Io*Kvco*(C*R*s + 1))/(2*C*Cx*R*pi*s^3 + 2*C*pi*s^2 + C*Io*Kvco*R*s + Io*Kvco)
+%Previously it was:
+% (Io*Kvco*(Cx*R*s + 1))/(2*R*pi*Cx^2*s^3 + 4*pi*Cx*s^2 + Io*Kvco*R*Cx*s + Io*Kvco)
+[N,D] = numden(TF);
+poles = solve(D==0,s);
+zeroes = solve(N==0,s);
+
+%See this link to get explicit poles values:
+% https://uk.mathworks.com/help/symbolic/sym.root.html#:~:text=root(%20p%20%2C%20x%20)%20returns,the%20roots%20of%20the%20polynomial.
+
+Poles_explicit = solve(D==0,s,'MaxDegree',3)
+Poles_explicit = double(Poles_explicit)
+Zeroes_explicit = solve(N==0,s,'MaxDegree',3)
+Zeroes_explicit = double(Zeroes_explicit)
+
+%The above gives:
+% Poles_explicit =
+%
+%   1.0e+09 *
+%
+%  -1.6376 + 0.0000i
+%  -0.0145 - 0.0720i
+%  -0.0145 + 0.0720i
+%
+% Zeroes_explicit =
+%
+%  -1.6667e+08
+
+%Here we plot those poles and zeroes:
+zplane(Zeroes_explicit,Poles_explicit)
+```
+
+And we got a few specific poles, as follows:
+
+![image](https://user-images.githubusercontent.com/95447782/164890804-c474cc50-0943-4a61-aeea-3d6d0e820930.png)
+
+
+This is just to prove that with those "handles" or "knobs" we can get specific values for the poles of the PLL system and then it's just a case of getting parameter values that ensure the poles are on the LEFT half plane.
+
+R and C together will determine the **"LOOP BANDWIDTH"**. What do we mean when we talk about **the all-so-famous "LOOP BANDWIDTH"**?
+
+The Loop Filter (R+C || Cx) has:
+
+* A pole at 0. That's a pole at DC. (s=0 is jw=0 which is DC).
+* A pole at -1 / (R*C_series_with_Cx)
+* A zero at -1 / RC.
+
+Let's look again at the same figure as before. To get the Poles and Zeroes of the Loop Filter we calculated the total Impedance of the Loop Filter (R+C || Cx).
+
+![image](https://user-images.githubusercontent.com/95447782/164890831-8f34a454-90a7-42e3-b7ae-9685978fafba.png)
+
+Before we plug in some example values, let's analyze what we expect to see, and then we will use Matlab as a confirmation tool.
+
+The Bode plot shape that we expect to see from this particular Loop Filter (R+C || Cx) with those poles is this:
+
+![image](https://user-images.githubusercontent.com/95447782/164890842-8006e927-8970-49a6-9787-087efc0836c2.png)
+
+
+And **THIS** is called the **LOOP BANDWIDTH**:
 
