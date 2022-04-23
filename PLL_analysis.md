@@ -1259,4 +1259,8 @@ We have looked at the importance of the Loop Filter and how to design it.
 
 Next we will be looking at Integer-N PLL as well as Fractional-N PLL systems.
 
+## Integer-N PLL
+Next:
+
+[Integer-N PLL loop](/Integer-N_PLL.md)
 
