@@ -63,5 +63,22 @@ The spurs are a consequence of:
 * This voltage glitch on Vcontrol happens WHEN THE VCO IS IN PERFECT LOCK at a periodicity of Pref or at a frequency of fref.
 * Hence ideally when the VCO is in perfect lock Vcontrol should be a perfectly static value, like a DC value, and hence its spectrum should be a pure impulse at DC. But in reality it does have these periodic glitches happening at fref, so the Vctrl spectrum shows tones at fref and all its multiples (all its harmonics).
 * Hence the VCO output spectrum is not an ideal impulse at N*fref, but it has tones on its sides, separated at multiples of fref. **Those are the SPURS.**
-* But the good news is that the Loop Bandwidth is 1/10 of fref and within that bandwidth the VCO output will mimic the reference oscillator hence the VCO out will be nice and clean within that band. Outside of that band, there will be the spurs. **So, what is better to maximize spur rejection, LARGE Loop Bandwidth or SMALL loop bandwidth?**. The reasoning is simple: the spurs come at fref and multiples of fref, the Loop BW is 1/10 of fref, hence by definition the spurs are always above the filter's cuttoff, i.e. the filter always attenuates the spurs (the spurs are just voltage glitches in Vctrl), the question is how much, and since it's a low pass filter, lower cuttoff frequency attenuates the spurs more (remember spurs are just voltage glitches in Vctrl), so LOWER Loop Bandwidth attenuates spurs more, i.e. it makes the voltage glitches smaller. Since the magnitude of the voltage glitches is <img src="https://render.githubusercontent.com/render/math?math=\Delta V=\frac{\delta {*I}_o }{C+\textrm{Cx}}"> , making C+Cx larger reduces the voltage spikes, that is REDUCING the Loop Bandwidth, since the Loop Bandwidth is equal to the 2nd pole of the Loop Filter which is 1/R*C_series_with_Cx.
+* But the good news is that the Loop Bandwidth is 1/10 of fref and within that bandwidth the VCO output will mimic the reference oscillator hence the VCO out will be nice and clean within that band. Outside of that band, there will be the spurs. **So, what is better to maximize spur rejection, LARGE Loop Bandwidth or SMALL loop bandwidth?**. The reasoning is simple: the spurs come at fref and multiples of fref, the Loop BW is 1/10 of fref, hence by definition the spurs are always above the filter's cuttoff, i.e. the filter always attenuates the spurs (the spurs are just voltage glitches in Vctrl), the question is how much, and since it's a low pass filter, lower cuttoff frequency attenuates the spurs more (remember spurs are just voltage glitches in Vctrl), so LOWER Loop Bandwidth attenuates spurs more, i.e. it makes the voltage glitches smaller. Since the magnitude of the voltage glitches is <img src="https://render.githubusercontent.com/render/math?math=\Delta V=\frac{\delta {*I}_o }{C+Cx}"> , making C+Cx larger reduces the voltage spikes, that is REDUCING the Loop Bandwidth, since the Loop Bandwidth is equal to the 2nd pole of the Loop Filter which is 1/R*C_series_with_Cx.
 
+
+![image](https://user-images.githubusercontent.com/95447782/164892180-4257d237-9c2e-44da-a318-11b7bee17f4f.png)
+
+
+
+The following figure shows the reasoning that LOWER Loop Bandwidth rejects spurs more (attenuates them more).
+
+![image](https://user-images.githubusercontent.com/95447782/164892168-751e3950-b421-45c0-b157-87104659daf6.png)
+
+
+
+A bit more reasoning about this:
+* If Loop BW is 1/10 of fref,  (1/10 of fref is 1/R[CCx/(C+Cx)]). Then from that frequency onwards, the loop starts to attenuate higher frequencies at -20dB/decade, that is, a decade from that point is 10x that frequency, which is fref, so any signal or glitch at fref is attenuated by the Loop Filter by -20dB.
+* If we double C+Cx, that is halfing the Loop BW, then the attenuation at fref is twice as much, which is 6dB more attenuation, so -26dB attenuation instead of -20dB.
+* So, if we double the Caps, we half the Loop Bandwidth, then the size of these voltage spikes becomes half.
+
+However, **the trade-off is** that while REDUCING the Loop BW provides better spur magnitude reduction (better spur rejection), the downside is that we know that the VCO output mimics the reference oscillator over a smaller range of frequencies, i.e. over a narrower band in the spectrum plot, and that means the high VCO phase noise is present over more frequencies at the PLL output.
