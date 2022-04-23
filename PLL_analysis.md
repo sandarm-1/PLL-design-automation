@@ -559,4 +559,122 @@ The above figure comes from the previous model that we have developed for the PD
 
 Now, the way we add one zero to that is by, instead of squirting the current into a simple cap Cx, we squirt it into a parallel combination of R+C in parallel with Cx.
 
+![image](https://user-images.githubusercontent.com/95447782/164889342-955bd400-b036-4e16-abf4-b4296b3ca220.png)
 
+If we simply calculate the total impedance formed by the passives, here is what we get:
+
+(R + C) || Cx
+
+![image](https://user-images.githubusercontent.com/95447782/164889396-039c8187-8c17-4c55-ad6f-1121501bab1b.png)
+
+
+This impedance has:
+* a zero at -1/RC 
+* a pole at 0
+* another pole at -1/[R*(C in series with Cx)] -- And please note "C in series with Cx" is a smaller value than either C and Cx.
+
+That set of poles and zeroes looks like this in the pole-zero diagram:
+
+![image](https://user-images.githubusercontent.com/95447782/164889401-59c3efec-244f-4512-9a0c-588308b4aadf.png)
+
+
+Let's do this poles & zeroes calculation in Matlab, so we can automate this for more complex networks in the future:
+
+```matlab
+%======================================================================
+%==== First, a simple RC-series and RC-parallel impedance calculation:
+syms R C s;
+%We input the individual network elements:
+Zr = R;
+Zc = 1/(s*C);
+
+%We explicit how the elements are connected (in series, in parallel, or a
+%combination thereof).
+%In this case we do R and C are in series.
+%Zrc_series = Zr+Zc
+Zrc_series = seriesz(Zr,Zc)
+P = partfrac(Zrc_series, s)
+C = children(P);
+C = [C{:}];
+[N,D] = numden(C)
+poles = solve(D==0,s)
+zeroes = solve(N==0,s)
+%The above gives:
+%Zrc_series = R + 1/(C*s)
+%P = R + 1/(C*s)
+%N = [R, 1]
+%D = [1, C*s]
+% poles = empty
+% zeroes = empty
+
+
+%Same thing but parallel:
+Zrc_parallel = parallelz(Zr,Zc)
+P = partfrac(Zrc_parallel, s)
+C = children(P);
+C = [C{:}];
+[N,D] = numden(C)
+poles = solve(D==0,s)
+zeroes = solve(N==0,s)
+%The above gives:
+%Zrc_parallel = R/(C*s*(R + 1/(C*s)))
+%P = R/(C*R*s + 1)
+%N = [R, 1]
+%D = [1, C*R*s + 1]
+% poles = empty
+% zeroes = empty
+%======================================================================
+
+
+
+%=====================================================
+%==========LOOP FILTER TOTAL IMPEDANCE AND POLES CALCULATION
+% Same thing as before, now for Loop Filter made of parallel combination of Cx
+% with a series combination of R+C:
+clear all;
+syms R C Cx s;
+Zr = R;
+Zc = capz(C,s);
+Zcx = capz(Cx,s);
+Zloop_filt = parallelz(Zcx,seriesz(Zr,Zc))
+Zloop_filt = simplify(Zloop_filt)
+%From the above we get:
+%Zloop_filt = (C*R*s + 1)/(s*(C + Cx + C*Cx*R*s))
+[N,D] = numden(Zloop_filt)
+%From this we can get the poles as the roots of the denominator:
+poles = solve(D==0,s)
+zeroes = solve(N==0,s)
+%That gives us:
+% poles = 
+%                 0
+% -(C + Cx)/(C*Cx*R)
+% zeroes = 
+% -1/(C*R)
+%The above poles & zeroes actually match the hand calculation.
+%=====================================================
+```
+
+Not how Matlab calculation matches hand calculation for the total Impedance of the Loop Filter (R+C || Cx):
+
+Impedance of Loop Filter (R+C || Cx) by Matlab:
+
+![image](https://user-images.githubusercontent.com/95447782/164889438-ab80db19-0d6c-4495-b986-c6c44f0eb827.png)
+
+
+Impedance of Loop Filter (R+C || Cx) by hand calculation:
+
+![image](https://user-images.githubusercontent.com/95447782/164889447-2e8105d0-c9f0-4131-88ed-74a436c686c2.png)
+
+
+So, they match, this is to prove that we can automate the impedance calculation for more complex networks using Matlab's symbolic math toolbox.
+
+Note how also the Matlab analysis done above matches the hand calculation of poles and zeroes:
+
+With Matlab we got that:
+* poles = 
+*         0 --> This is the pole at DC
+*         -(C + Cx)/(C*Cx*R)  -->  This is the pole at -1 / (R*C_series_with_Cx)
+* zeroes = 
+*         -1/(C*R) --> This is the zero at -1/RC
+
+With hand calculation we got the same thing:
