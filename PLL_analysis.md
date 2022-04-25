@@ -18,7 +18,7 @@ Input phase looks like a ramp, and we need a velocity control system
 This is the first important point. Input phase looks like a ramp.
 Since sin(2pi) = sin(4pi) = etc we could think of it as a sawtooth waveform, but it's not necessary.
 
-![redone_images_1](https://user-images.githubusercontent.com/95447782/164889172-d1af919b-8b64-46d9-ae94-ce4725208386.jpg)
+![image](https://user-images.githubusercontent.com/95447782/165102405-b7e5724c-5de0-4a57-92b2-863190fed0c1.png)
 
 
 
@@ -506,14 +506,14 @@ Before we talk about the loop filter, let's just say that the PD looks as follow
 
 So the model of the PD is this:
 
-![image](https://user-images.githubusercontent.com/95447782/164785672-62dfc3d6-2585-4ce2-b5e5-2487adb534f2.png)
+![image](https://user-images.githubusercontent.com/95447782/165102780-95db8457-5279-4462-94ed-252b95183435.png)
 
 
 Now, the Phase Detector output is a couple of digital signals, but what we need at the input of the VCO is an analog signal (Vctrl). So between the PD and the VCO we need some sort of D/A conversion.
 
 How do we do fast D/A conversion? Current steering.
 
-![image](https://user-images.githubusercontent.com/95447782/164785701-1746884b-1e81-4234-a119-8aaa42dfd5db.png)
+![image](https://user-images.githubusercontent.com/95447782/165103492-50f9f14b-b5d8-46a4-aaaf-14a08ae7d5b7.png)
 
 
 So at the output of the Charge Pump, the VOLTAGE that we get on the CAP (let's call it Vcp) is the following:
@@ -528,19 +528,19 @@ So, keep in mind that throwing current into (and out of) the cap is our crude at
 
 Now look at the following diagram to see exactly what the CP voltage does as a response to UP-DOWN pulses:
 
-![image](https://user-images.githubusercontent.com/95447782/164786025-2c81d294-49ad-4361-987a-d8e8e5a29d2b.png)
+![image](https://user-images.githubusercontent.com/95447782/165104507-01fe1785-fad2-4274-9bc2-db69a055bf1b.png)
 
 
 From the previous diagram we can see visually the behaviour of Vcp. A few moments later we will see that this Charge Pump mechanism is not exactly providing an instantaneous average of UP-DOWN, just an integral of it, but that will serve as an approximation for the average of UP-DOWN.
 
 Writing the behaviour of Vcp mathematically, Vcp is a representation of the INTEGRAL of "UP-DOWN" differential signal. That is:
 
-![image](https://user-images.githubusercontent.com/95447782/164786044-f42c7b00-2872-4498-a40e-d9a37a747ec5.png)
+![image](https://user-images.githubusercontent.com/95447782/165104644-c4a5c1a8-9ee1-4e43-bc41-4cf6d281a68e.png)
 
 
 That's an "undefined" integral and represents the overall behaviour of Vcp as a function of UP-DOWN differential signal. But, to be more accurate, if we want to know the SPECIFIC value of Vcp at a particular time, we need to evaluate the integral, like this:
 
-![image](https://user-images.githubusercontent.com/95447782/164786054-0cfef4f0-b7b3-46d0-8f28-9418cae12d4f.png)
+![image](https://user-images.githubusercontent.com/95447782/165104974-35102a56-c10f-47b3-835f-c9e030a0159c.png)
 
 
 Please note that the expression INSIDE THE INTEGRAL is NOT the average value of UP-DOWN differential signal. It's the ACTUAL TIME-CHANGING VALUE(s) taken dynamically by UP-DOWN differential signal. Why do we bring this up? As we mentioned before, ideally we want the CP to produce a voltage that is a representation of the AVERAGE value of UP-DOWN. Why? Again, because we want to correct our VCO based on the AVERAGE value of UP-DOWN, because that's the purpose of our PD system. However, in our attempt to convert UP-DOWN from digital to analog, we thought that it would be a good idea to do this by shoving current in/out of a Cap based on UP-DOWN signals (that's where the Charge Pump came from) and in doing so we built this circuit which what it actually does is to INTEGRATE UP-DOWN, not to CALCULATE THE AVERAGE OF UP-DOWN. That's us being strict here. BUT still, in real life this won't be a problem, because **if we integrate over a long enough period of time, then the integral IS the average.** That's the thing here. Yes, the integral of UP-DOWN is NOT the average of UP-DOWN but if we ZOOM OUT and we only evaluate the integral over relatively long segments of time (and I will define relatively in a second) then the integral is a good approximation of the average. In fact, if you were reset your integrator to 0V, then start feeding it with the stream of UP-DOWN pulses, then wait for a huuuuuuuuuge period of time, letting your integrator integrate during that long long period of time, and after such long long period of time you look at the integrator's output, then at that exact moment the integrator's output will be a number which is pretty much exactly the average value of UP-DOWN during the long long period of time. So, what is a "relatively long" period of time here? Simply a period of time that is much larger than the reference clock period, since that is the sampling frequency of UP-DOWN or the frequency at which UP-DOWN updates itself to a new value.
