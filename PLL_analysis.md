@@ -990,13 +990,13 @@ The Loop Filter (R+C || Cx) has:
 
 Let's look again at the same figure as before. To get the Poles and Zeroes of the Loop Filter we calculated the total Impedance of the Loop Filter (R+C || Cx).
 
-![image](https://user-images.githubusercontent.com/95447782/164890831-8f34a454-90a7-42e3-b7ae-9685978fafba.png)
+![image](https://user-images.githubusercontent.com/95447782/165126023-ff8cad75-0f0c-4c58-9797-2336b5a0dc4a.png)
 
 Before we plug in some example values, let's analyze what we expect to see, and then we will use Matlab as a confirmation tool.
 
 The Bode plot shape that we expect to see from this particular Loop Filter (R+C || Cx) with those poles is this:
 
-![image](https://user-images.githubusercontent.com/95447782/164890842-8006e927-8970-49a6-9787-087efc0836c2.png)
+![image](https://user-images.githubusercontent.com/95447782/165130195-85858d16-8ca5-4a64-93d1-da273a2bbc80.png)
 
 
 And **THIS** is called the **LOOP BANDWIDTH**:
