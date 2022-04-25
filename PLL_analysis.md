@@ -41,7 +41,7 @@ In a position control system, we want to track a position which is static, not c
 ### System with 0 integrators:
 Let's see if we can implement such position control system with a simple feedback system like this:
 
-![image](https://user-images.githubusercontent.com/95447782/164889194-1a555382-90b1-4c6e-9fda-759bf1828971.png)
+![image](https://user-images.githubusercontent.com/95447782/165091899-224c71a2-8183-487c-ba8f-27221911e15e.png)
 
 
 In this system, the open loop gain (feed forward path) is A, then we have a feedback with no gain in it (feedback gain is 1) and it's a negative feedback.
@@ -50,7 +50,7 @@ The error signal after the summing block is <img src="https://render.githubuserc
 
 
 > 
-> **Matlab script:**
+> **AUTOMATION:**
 > 
 > [This Matlab script](matlab/calculate_closed_loop_tf.m) can be used to calculate the closed loop transfer function of the system above.
 > 
@@ -152,7 +152,7 @@ Now, if our input to this system is, let's say, 1V, and we have a gain of A=5, t
 ### System with 1 integrator:
 Now let's try a system with one integrator in the feed forward path. Can that be a "position control" system?
 
-![image](https://user-images.githubusercontent.com/95447782/164773811-df78e54c-0abc-4028-9ecc-4f73eb882dc9.png)
+![image](https://user-images.githubusercontent.com/95447782/165092508-963cc5ab-46c7-422e-acfe-ff0db69f8e3c.png)
 
 So now we are integrating the error signal. The integral (over time) of a signal, if it's a fixed value, i.e. a constant, a static value, is going to tend to infinity as time goes to infinity. Given enough time, the integral will grow and grow and it will tend to infinity. Intuitively, this is like an infinitely large gain, so due to the feedback it will push (squeeze) the error signal down to zero, which is the same as saying that the output will tend to match the input exactly, as time goes to infinity.
 
@@ -162,7 +162,7 @@ The integrator's Laplace transform is 1/s.
 
 
 > 
-> **Matlab script:**
+> **AUTOMATION:**
 > 
 > [This Matlab script](matlab/closed_loop_tf_system_with_1_integrator.m) can be used to calculate the closed loop transfer function of the system with one integrator in the feed forward path.
 > 
@@ -295,12 +295,12 @@ out_at_t_inf = eval(out_in_time_domain)
 
 The above calculations with the Symbolic Math Toolbox match the hand calculations:
 
-![image](https://user-images.githubusercontent.com/95447782/164776487-a0574d33-94ba-49b7-aafb-e00879b9ae08.png)
+![image](https://user-images.githubusercontent.com/95447782/165093138-5df49589-e7ba-4157-b463-c7d48264df27.png)
 
 
 Now, from the above, we can go from the frequency domain (Laplace, partial fractions expansion) to the time domain, and thus we can see what output value will be as time tends to infinity:
 
-![image](https://user-images.githubusercontent.com/95447782/164776506-dc7ac1b6-4d03-4f71-82eb-7cdc24d241ff.png)
+![image](https://user-images.githubusercontent.com/95447782/165093637-ccd08628-6a71-4927-9997-a1f54c31846c.png)
 
 
 And we see that if the input is a step of value 1, the output will settle also at the input value 1, as time tends to infinity. So the output will match the input well.
@@ -315,7 +315,7 @@ For that, we put a ramp at the input and see if the output can track it accurate
 
 Let's do it:
 
->    **Matlab script:**
+>    **AUTOMATION:**
 >
 >    This [Matlab script](matlab/step_response_and_ramp_response.m) can be used to calculate the step response and ramp response of a system with one single integrator in the feed-forward path.
 >    
