@@ -77,13 +77,13 @@ To be clear, "fundamental for spurs" is the frequency of the spurs, and that's t
  
 In particular for the K=2.5 example: (a=1, b=1, N=2 yields K=2.5)
 
-![image](https://user-images.githubusercontent.com/95447782/164894664-ba9d431a-656d-4a78-9dba-ccba5a1187ce.png)
+![image](https://user-images.githubusercontent.com/95447782/165145269-61eb9ec6-a8e9-4f51-9a33-60ce15903cc4.png)
 
 Overall, the division is by a number that is larger than N and smaller than N+1.
 
 N is the **integer part**, b/(a+b) is the **fractional part.**
 
-![image](https://user-images.githubusercontent.com/95447782/164894700-fcc4d585-843b-4389-9e8d-9ed257a5bef7.png)
+![image](https://user-images.githubusercontent.com/95447782/165145531-c7fb53db-d958-42b8-92a4-61d06539a0f8.png)
 
 
 N can be a large number, like 100 or 1000, etc.
