@@ -93,12 +93,12 @@ In particular for the previous example where we wanted fout to be from 900MHz to
 For that example, simply make N programmable from 90 to 110, then to achieve the decimals (0.1, 0.2, 0.3 up to 0.9) you make a programable from 1 to 10 and b programmable from 10 to 1, where always you have that a+b=10.
 
 
-![image](https://user-images.githubusercontent.com/95447782/164894709-27fb0aac-f958-4f27-9bff-465ae65c691c.png)
+![image](https://user-images.githubusercontent.com/95447782/165148068-a153c6bf-e68b-48cd-a161-5518c679a346.png)
 
 
 From those values we can calculate the spurs frequency, or their period, which we call "Net period".
 
-![image](https://user-images.githubusercontent.com/95447782/164894716-ddf8102b-c027-4ad9-943b-875a62633093.png)
+![image](https://user-images.githubusercontent.com/95447782/165148336-cddaa641-8780-49cc-8073-6a99c1bf1134.png)
 
 
 Swapping in the specific numbers for this case (a+b=10, N=90 to 110) we obtain that it just so happens that the spur frequency happens to be precisely fref/10, so 10MHz/10 = 1MHz, which is exactly the channel raster again, like in the integer-N example. Also it is just at the edge of the Loop Bandwidth which we had set to 1MHz so the spurs would come through the Loop Filter bandwidth if we left the Loop Bandwidth at 1MHz (10x the integer-N).
