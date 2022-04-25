@@ -1028,7 +1028,7 @@ In the following figure, if the red curve is the reference oscillator phase nois
 
 **So, in summary, we should always aim for 1/10 exactly.**
 
-![image](https://user-images.githubusercontent.com/95447782/164891031-ebcae0c1-5f98-420a-817f-9781334fc4a7.png)
+![image](https://user-images.githubusercontent.com/95447782/165131477-bff24ace-9dcb-41ef-ba54-b66d9be07544.png)
 
 
 Now, let's go ahead and plug in some example numbers. These are (arbitrary) values:
@@ -1095,7 +1095,7 @@ pzplot(Zloop_filt)
 
 This is what we got in this example:
 
-![image](https://user-images.githubusercontent.com/95447782/164891074-c235989f-61b9-449c-91bc-6f7d39d66925.png)
+![image](https://user-images.githubusercontent.com/95447782/165131640-feccf144-1c16-4c18-91c4-62a51602afb7.png)
 
 
 What we get from the above example is:
@@ -1115,7 +1115,7 @@ Note: **Don't confuse the poles of the Loop Filter with the poles of the whole P
 Finally:
 Example of designing the Loop Filter for a given input frequency, following the 1/10 rule of thumb.
 
->   **Matlab script:**
+>   **AUTOMATION:**
 >   
 >   This [Matlab script](matlab/2nd_order_loop_filter_design.m) can be used to design the specific values of R, C and Cx of a 2nd order loop filter based on the 1/10 rule.
 >   
