@@ -2,7 +2,7 @@
 
 Very basic sigma-delta modulation concept:
 
-![image](https://user-images.githubusercontent.com/95447782/164894968-4148456b-829f-4e43-98e7-905b7e5a960f.png)
+![image](https://user-images.githubusercontent.com/95447782/165153870-d6386357-285f-42b2-86d2-14297773ffca.png)
 
 Look at the bottom drawing in the above figure, the one with the integrator.
 
@@ -23,12 +23,12 @@ Basic idea of the Deta-Sigma is this:
 * So, overall you have put together a system that **pushes (shapes) the quantization noise up to high frequencies and keeps a copy of the input at low frequencies.**
 * The Sigma-Delta name is because the integrator is like a sum (summation, Sigma <img src="https://render.githubusercontent.com/render/math?math=\Sigma">) and the comparison block at the input, the one that generates the error signal, that's a difference, so Delta <img src="https://render.githubusercontent.com/render/math?math=\Delta">.
 
-![image](https://user-images.githubusercontent.com/95447782/164895037-4a87b8c4-1308-4dcc-9c39-5a15f0b13111.png)
+![image](https://user-images.githubusercontent.com/95447782/165154312-64a54378-527e-4550-8b6b-485d2bfadb83.png)
 
 
 Then the output spectrum, Y looks like this:
 
-![image](https://user-images.githubusercontent.com/95447782/164895042-2d45cf4f-8fb7-4b4e-91ed-3329bd9b8c84.png)
+![image](https://user-images.githubusercontent.com/95447782/165154555-b0efe6ce-503f-4268-99e7-3701d5bb8d0d.png)
 
 
 Where N is the order of the modulator, or the order of the transfer function H.
