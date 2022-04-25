@@ -396,7 +396,7 @@ out_at_t_inf = eval(out_for_input_ramp_in_time_domain)
 
 So we conclude that **the system with 1 single integrator** in the feed-forward path is ok as a "position control" system but **NOT OK as a "velocity control" system**.
 
-![image](https://user-images.githubusercontent.com/95447782/164779708-00b3a284-2f61-4ad5-abd3-cf17ff1056f6.png)
+![image](https://user-images.githubusercontent.com/95447782/165096103-b1e3fc06-2138-46ec-afaf-6fbbdf736579.png)
 
 
 Ok, so again we keep asking, how do we do a proper "velocity control" system?
@@ -413,24 +413,38 @@ First of all, before continuing, let's show why the VCO is modelled as an integr
 
 The VCO in principle is just a thing that takes in a Voltage and produces an output frequency which is proportional to the input voltage.
 
-![image](https://user-images.githubusercontent.com/95447782/164779910-734dc617-4a56-476c-823b-f4ce234ad711.png)
+![image](https://user-images.githubusercontent.com/95447782/165095368-0c65a07e-fce3-4abf-956d-241b2510b6a5.png)
 
 
 But the PHASE is the INTEGRAL of the Frequency.
 
-![image](https://user-images.githubusercontent.com/95447782/164779922-4337d1d8-c173-4cdd-a791-41a410604374.png)
+![image](https://user-images.githubusercontent.com/95447782/165095662-4d360077-1a58-4f78-94f0-e00c0a61b620.png)
 
 
 Why is that the case? Because, by definition, the frequency (angular frequency in rad/s) is the rate of change of the phase (in radians or degrees).
 Now, the same thing, said in the Laplace domain, is this, the phase in the frequency (s) domain is the frequency (omega) divided by s.
 
-![image](https://user-images.githubusercontent.com/95447782/164780106-55889c5a-d31d-4fdc-8cf7-c94a43133f08.png)
+![image](https://user-images.githubusercontent.com/95447782/165096241-2f767e5a-1251-4ec5-bcfe-baddc04ab469.png)
 
 
-And, in a VCO, the frequency is proportional to the input voltage. <img src="https://render.githubusercontent.com/render/math?math=\omega(t) = K*V(t)">  and <img src="https://render.githubusercontent.com/render/math?math=\omega(s) = K*V(s)">, but since <img src="https://render.githubusercontent.com/render/math?math=\phi(s) = \frac{\omega(s)}{s}"> then <img src="https://render.githubusercontent.com/render/math?math=\phi(s) = \frac{K*V(s)}{s}">.
+And, in a VCO, the frequency is proportional to the input voltage.
+
+<img src="https://render.githubusercontent.com/render/math?math=\omega(t) = K*V(t)">
+
+and
+
+<img src="https://render.githubusercontent.com/render/math?math=\omega(s) = K*V(s)">
+
+but since
+
+<img src="https://render.githubusercontent.com/render/math?math=\phi(s) = \frac{\omega(s)}{s}">
+
+then
+
+<img src="https://render.githubusercontent.com/render/math?math=\phi(s) = \frac{K*V(s)}{s}">
 
 
-![image](https://user-images.githubusercontent.com/95447782/164780297-931ae748-ba5e-4a6a-97a7-d80f63faaa5a.png)
+![image](https://user-images.githubusercontent.com/95447782/165096643-3349e0a6-64ed-4d82-9819-24f5105f03fb.png)
 
 
 Since we have that <img src="https://render.githubusercontent.com/render/math?math=\phi(s) = \frac{K*V(s)}{s}">, that's why we draw the VCO in the system diagram as a block that takes in a Voltage, outputs a Phase, and the black box "continuous time" relationship between them is K/s.
