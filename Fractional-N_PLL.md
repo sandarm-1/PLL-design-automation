@@ -129,7 +129,7 @@ Repeat again, **ESSENTIALLY, the signal that chooses N or N+1 is a PWM modulated
 
 This is what we have at the moment:
 
-![image](https://user-images.githubusercontent.com/95447782/164894855-8d43630f-26ee-4b9c-946b-4f94cd23067b.png)
+![image](https://user-images.githubusercontent.com/95447782/165149988-a19593a6-2dad-4d07-99d7-6c7fed772a5a.png)
 
 
 That's what our current fractional-N divider is doing, **we already have that PWM modulation going on, and that is fine, but the problem is that we are doing that PWM modulation BY COUNTING CYCLES IN A CYCLICAL WAY.** That's what the fractional-N divider is doing, and that cyclical way, that repeatability, that periodicity, is what creates the periodic spurs.
