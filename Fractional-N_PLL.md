@@ -59,7 +59,7 @@ In the xample with K=2.5, spurs frequency is fout/5 which in this examples happe
 
 **Generalized formula for how to divide by any fractional number:**
 
-![image](https://user-images.githubusercontent.com/95447782/164894591-a08d88ee-8144-4805-a898-04cf4ec13236.png)
+![image](https://user-images.githubusercontent.com/95447782/165143859-bc04ecef-9a45-449c-9bd9-c547b10c88e9.png)
 
 
 Here we define:
@@ -68,7 +68,7 @@ Here we define:
 
 Here we can see the definition of "net period" and "average period":
 
-![image](https://user-images.githubusercontent.com/95447782/164894635-0c71dee8-76d8-40fc-baae-ce7ecf165835.png)
+![image](https://user-images.githubusercontent.com/95447782/165144989-101efaf7-0281-4b0e-ae90-b21247c3a7ff.png)
 
 
 To be clear, "fundamental for spurs" is the frequency of the spurs, and that's the INVERSE of the periodicity (PERIOD) of the PD output, i.e. the periodicity at which the PD output sequence of pulses repeats itself, and that is fout/(m+k), that PERIOD is the "Net period". So, "fundamental for spurs" = "1/Net period". So when we say "Net period" we are also saying "Spurs period".
