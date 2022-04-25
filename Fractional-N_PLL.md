@@ -43,15 +43,12 @@ This is how we can make a divide-by-K where K is fractional (like 2.5, 2.6...).
 
 To implement a divide by 2.5 (as an example) we make a circuit that first divides by 2 during 2 cycles and then divides by 3 during 3 cycles.
 
-![image](https://user-images.githubusercontent.com/95447782/164894535-c6efb989-5e05-4dea-bfdb-0b3348f7c96f.png)
+![image](https://user-images.githubusercontent.com/95447782/165142955-9f50e3e5-e6fc-4265-b516-dce0b9a7150f.png)
 
 
 Now what's the frequency of the spurs in this arrangement?
 
 In the previous analysis the spurs come out at a periodicity of 5 seconds or a frequency of 1/5Hz, for a VCO output frequency of 1 Hz and a reference frequency of 1/2.5 Hz, for a K division factor of 2.5. So the spurs are not coming out not at fref but at a frequency defined by fout and K, in particular we will see later that the freq of the spurs is fout/(m+k) where in this case that's fout/(2+3)
-
-![image](https://user-images.githubusercontent.com/95447782/164894546-c2481ef9-f471-42f0-8512-d722d8e5477a.png)
-
 
 ![image](https://user-images.githubusercontent.com/95447782/164894549-6a36a2cb-375f-4f7c-9c17-66f67b6ac90a.png)
 
