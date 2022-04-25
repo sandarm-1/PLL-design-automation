@@ -451,7 +451,7 @@ Since we have that <img src="https://render.githubusercontent.com/render/math?ma
 
 So we draw the VCO in our block diagram like this:
 
-![image](https://user-images.githubusercontent.com/95447782/164780379-d9f431cc-8b78-4aa7-8b4b-c0a78f3e02b8.png)
+![image](https://user-images.githubusercontent.com/95447782/165098539-72bb8b21-11de-49c8-9b9f-4680f83eea06.png)
 
 
 And that's why our VCO is an integrator. Essentially it all comes from the fact that Phase is the Integral of Frequency, and frequency is proportional to input voltage in the VCO.
@@ -463,7 +463,7 @@ We are going to see that to get a "velocity control" system it's not as easy as 
 
 But let's prove it.
 
-![image](https://user-images.githubusercontent.com/95447782/164780420-a8cebb12-458d-44ae-a2c4-bbb2aad9bb8e.png)
+![image](https://user-images.githubusercontent.com/95447782/165099252-1e055a36-f2fc-406e-9e6e-9b8f5b8cebf2.png)
 
 
 Such a system's transfer function will look like this:
@@ -490,7 +490,7 @@ Conclusion from this is simply that we can't just concatenate 2 integrators and 
 
 We have reached the point that we know that our PLL system has to look like this. I mean, it has to look like this means that we have a VCO for sure, which is an integrator, we have a Phase Detector PD, which is the error block at the feedback point, and then we have reached the conclusion that we need an extra block, which we will call the "loop filter", which is the extra component required to finally construct the desired "velocity control" system in a way that the whole thing is stable and actually performs "velocity control" which is essentially the ability of the output to follow accurately an input that looks like a ramp.
 
-![image](https://user-images.githubusercontent.com/95447782/164781821-8234a1cb-3904-4efd-a429-85fd2d01509f.png)
+![image](https://user-images.githubusercontent.com/95447782/165099887-9255ff9f-573e-4aca-a9f7-7dd4b0b10e1d.png)
 
 
 Before we talk about the loop filter, let's just say that the PD looks as follows, and the gain of the PD is <img src="https://render.githubusercontent.com/render/math?math=\frac{\mathrm{VDD}}{2\pi }">
@@ -501,7 +501,7 @@ Before we talk about the loop filter, let's just say that the PD looks as follow
 , so the overall gain of the PD defined as Output/Input is <img src="https://render.githubusercontent.com/render/math?math=\mathrm{PD}\_\mathrm{gain}=\frac{\left(\frac{\mathrm{VDD}}{2}\right)}{\pi }=\frac{\mathrm{VDD}}{2\pi}">
 
 
-![image](https://user-images.githubusercontent.com/95447782/164889651-bcf4ccfc-ec8a-4460-8dfc-df55f97a9bff.png)
+![image](https://user-images.githubusercontent.com/95447782/165101367-908ba3fe-8250-47f0-a97e-da338315809d.png)
 
 
 So the model of the PD is this:
