@@ -549,19 +549,19 @@ Anyway, all of this was just to justify that the integral of UP-DOWN that the Ch
 
 The following figure tries to give an intuition as to why the integral of UP-DOWN is a proxy for the average of UP-DOWN, when we zoom out.
 
-![image](https://user-images.githubusercontent.com/95447782/164786148-07a70de3-2adb-4785-8060-abe81c83a3ce.png)
+![image](https://user-images.githubusercontent.com/95447782/165121356-2d82f286-1438-4332-bb2c-ab0590bf9566.png)
 
 
 Anyway, whether that expression is the average of UP-DOWN differential signal or just an approximation, that´s ok as long as we are aware of that, what matters is that we have this integrative behaviour coming out of the Charge Pump, and that's ok, we recognize that and we insert that into our model.
 
 **Hence our model of the PD+CP looks like the error block followed by a couple of gain blocks followed by an integrator which is due to the Charge Pump**. That's not bad, remember from the "1 integrator" section that we saw that an integrator right after the error signal can have this effect that it tries to force the error signal to be tiny and that is a good thing, at least in principle. But we also saw that 2 integrators with nothing else (CP+VCO) will be unstable. So that's why we need the Loop Filter.
 
-![image](https://user-images.githubusercontent.com/95447782/164786230-96adb1a9-5397-43d1-b673-0242c514b485.png)
+![image](https://user-images.githubusercontent.com/95447782/165122855-f99f1425-9c92-49e1-93a1-3b1b3b810fb4.png)
 
 
 2 integrators with nothing else (CP+VCO) will be unstable. So that's why we need the Loop Filter.
 
-![image](https://user-images.githubusercontent.com/95447782/164786268-d2676c21-d361-4a2d-8bca-7798f066ab9b.png)
+![image](https://user-images.githubusercontent.com/95447782/165123287-1769e9c5-9536-4f0e-a3f4-b51da522583e.png)
 
 
 Finally, we are going to develop the Loop Filter.
