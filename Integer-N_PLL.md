@@ -120,7 +120,7 @@ In the Integer-N frequency synthesizer, the input reference clock IS EQUAL TO TH
 * If you set N = 900, you get 900MHz, if N=901 you get 901MHz, if N=1100 you get 1.1GHz. Output frequency changes in steps of 1MHz which is the channel separation.
 * **The input reference frequency is the channel raster (1MHz).**
 
-![image](https://user-images.githubusercontent.com/95447782/164894164-3c3abd1b-32c3-45f9-9533-f6afe40fa81f.png)
+![image](https://user-images.githubusercontent.com/95447782/165139565-a961c6b1-88af-483d-896a-3103b5241beb.png)
 
 
 But the problem with this arrangement (integer-N) is that:
