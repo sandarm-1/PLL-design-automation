@@ -1,5 +1,11 @@
 # PLL
-PLL analysis and systematic design
+Systematic design of PLL. From specs to GDS in one click.
+
+Project scope
+---
+Programmatic synthesis of PLL system.
+Specs --> Topology selection --> Matlab analysis --> Loop Filter order/Poles-Zeroes --> Component values (R, C, Cx, Io, Kvco) --> Model & Verify PLL closed loop stability --> Netlist --> Layout (ALIGN) --> GDS
+
 
 PLL analysis
 ---
