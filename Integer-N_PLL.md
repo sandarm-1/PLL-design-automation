@@ -30,18 +30,18 @@ It's worth talking a bit about settling time. This is important because:
 ## Integer-N frequency synthesis
 Up until now we had unitary feedback.
 
-Will the PLL loop work if we put a divide-by-N in the feedback path? Yes of course it will work.
+Will the PLL loop work if we put a divide-by-N in the feedback path?
 
-![image](https://user-images.githubusercontent.com/95447782/164891610-fc8a2cfb-01d8-4dc7-ad5b-381f0fcee806.png)
+![image](https://user-images.githubusercontent.com/95447782/165134324-45060e97-95e1-449c-8fba-8e693ac80a0e.png)
 
 
-But what's the new relationship between <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}"> and <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}">?
+Yes it will work, but what's the new relationship between <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}"> and <img src="https://render.githubusercontent.com/render/math?math=\phi_{ref}">?
 
 Well, the feedback loop ensure that the ERROR signal is very small. Hence <img src="https://render.githubusercontent.com/render/math?math=\phi_{out}"> will be regulated to <img src="https://render.githubusercontent.com/render/math?math=N*\phi_{ref}">.
 
 Since <img src="https://render.githubusercontent.com/render/math?math=\omega_{\mathrm{out}} =\frac{d}{\mathrm{dt}}\phi_{\mathrm{out}}"> then <img src="https://render.githubusercontent.com/render/math?math=\omega_{\textrm{out}} =N*\omega_{\textrm{ref}}">. So the output frequency will be N times the input frequency.
 
-![image](https://user-images.githubusercontent.com/95447782/164891700-bb5109ee-f36b-46e7-a63c-31444f017aca.png)
+![image](https://user-images.githubusercontent.com/95447782/165135634-091f6851-1ce7-4516-af96-2c1db3ff1bdd.png)
 
 
 **Now remember the Loop Bandwidth limitation that we imposed, we said that Loop Bandwidth of the Loop Filter had to be at most 1/10 of the input frequency.**
