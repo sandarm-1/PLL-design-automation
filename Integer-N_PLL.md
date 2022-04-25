@@ -10,7 +10,7 @@ If the input reference oscillator given to the PLL is outside of that frequency 
 
 In real life, when designing a PLL you will have to center the lock range across PVT so that it will be reasonably well centered around the expected input reference frequency.
 
-![image](https://user-images.githubusercontent.com/95447782/164891587-b6f9058c-7ce3-4b91-a69f-41a66b1bd4de.png)
+![image](https://user-images.githubusercontent.com/95447782/165133113-a5c7e713-563f-4838-9bef-7a02a2eb76f1.png)
 
 
 
@@ -21,7 +21,7 @@ It's worth talking a bit about settling time. This is important because:
 * If the base station asks you to go to a specific frequency, you have to change to that frequency quickly, in a given amount of time. Hence the PLL has to be able to settle from whatever frequency it is at to a new frequency quick enough. So there will be a spec for settling time based on that.
 * Settling time is not just getting to a target frequency, but in particular getting to that target frequency with a certain level of jitter and that means the loop is more accurately settled at the final frequency.
 
-![image](https://user-images.githubusercontent.com/95447782/164891594-c8e7ee1f-dda9-47c2-8bdc-d194644539b4.png)
+![image](https://user-images.githubusercontent.com/95447782/165132927-85dcfdbf-5806-4e42-98f1-0b55b61080d4.png)
 
 * **Settling time is LESS (FASTER) if Loop Bandwith is MORE.** Because a Loop Filter with LOWER Loop Bandwidth (lower cuttoff frequency) is LESS RESPONSIVE to changes, given a step input (that's the request to go from one freq to a new one) it will be slower to adapt from one frequency to a new one. Like an RC filter with larger RC time constant.
 
