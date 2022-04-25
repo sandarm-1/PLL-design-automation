@@ -77,7 +77,7 @@ To be clear, "fundamental for spurs" is the frequency of the spurs, and that's t
  
 In particular for the K=2.5 example: (a=1, b=1, N=2 yields K=2.5)
 
-![image](https://user-images.githubusercontent.com/95447782/165145269-61eb9ec6-a8e9-4f51-9a33-60ce15903cc4.png)
+![image](https://user-images.githubusercontent.com/95447782/165145687-1d29a08b-de53-44c9-88e5-a86ee23987e9.png)
 
 Overall, the division is by a number that is larger than N and smaller than N+1.
 
