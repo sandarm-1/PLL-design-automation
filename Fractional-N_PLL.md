@@ -12,7 +12,7 @@ In the Integer-N frequency synthesizer, the input reference clock IS EQUAL TO TH
 * **The input reference frequency is the channel raster (1MHz).**
 
 
-![image](https://user-images.githubusercontent.com/95447782/164894395-ddeeae6b-e63e-4560-a701-086c0054a72d.png)
+![image](https://user-images.githubusercontent.com/95447782/165139565-a961c6b1-88af-483d-896a-3103b5241beb.png)
 
 
 But the problem with this arrangement (integer-N) is that:
@@ -39,7 +39,7 @@ That is the fractional-N synthesizer.
 ## Implementation of the fractional divide-by-K
 This is how we can make a divide-by-K where K is fractional (like 2.5, 2.6...).
 
-![image](https://user-images.githubusercontent.com/95447782/164894445-6dc4fea8-47e3-4022-b521-110e2aeb6890.png)
+![image](https://user-images.githubusercontent.com/95447782/165140682-4fde1934-b0e4-477a-8347-96c6ad41e973.png)
 
 To implement a divide by 2.5 (as an example) we make a circuit that first divides by 2 during 2 cycles and then divides by 3 during 3 cycles.
 
