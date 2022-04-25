@@ -1261,7 +1261,7 @@ But apart from ensuring poles are on the LEFT half plane we also need:
 
 Specific values of R, C, Cx, Io, Kvco are chosen in order to get a specific damping factor. That is, "blue or magenta" curves below. We like damping factors around sqrt(2). This is all in Control theory books, "velocity control", how to choose damping factor and how to choose R, C, Cx, Io, Kvco for a certain damping factor.
 
-![image](https://user-images.githubusercontent.com/95447782/164891274-8a259539-6161-4bbc-b8c8-baa1df3d4239.png)
+![image](https://user-images.githubusercontent.com/95447782/165132804-8bc09c29-ab90-4e71-83f8-2a4068bc694a.png)
 
 
 ## Summary
