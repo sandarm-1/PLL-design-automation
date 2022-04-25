@@ -513,7 +513,7 @@ Now, the Phase Detector output is a couple of digital signals, but what we need 
 
 How do we do fast D/A conversion? Current steering.
 
-![image](https://user-images.githubusercontent.com/95447782/165103492-50f9f14b-b5d8-46a4-aaaf-14a08ae7d5b7.png)
+![image](https://user-images.githubusercontent.com/95447782/165133664-fefc8c54-541b-42f5-9257-eadf04fd6937.png)
 
 
 So at the output of the Charge Pump, the VOLTAGE that we get on the CAP (let's call it Vcp) is the following:
