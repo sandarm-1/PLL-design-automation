@@ -714,7 +714,7 @@ And the visual representation of those poles and zeroes in the complex frequency
 
 If we now insert this type of Loop Filter into our system's model, now we have:
 
-![image](https://user-images.githubusercontent.com/95447782/164889748-ac8a0df8-0baa-4a4b-b98f-b9279c6d880a.png)
+![image](https://user-images.githubusercontent.com/95447782/165127999-b0ef9189-af31-49ae-86eb-a1455f1502ee.png)
 
 Let's see if this system is stable now. For that, we do the closed loop transfer function and we look at the poles & zeroes of that.
 
@@ -799,7 +799,7 @@ TF = simplify(TF)
 
 Let's stop one second at this point. Check the Matlab code above. The nice thing about the Matlab code above is that it calculates the closed loop transfer function (TF) correctly. It gives the same Transfer Function as the manual calculation.
 
-![image](https://user-images.githubusercontent.com/95447782/164890621-d765669f-9012-440e-ac73-f9c16b830d47.png)
+![image](https://user-images.githubusercontent.com/95447782/165128597-fa76de9c-845d-4ab6-9f19-46876b4b4b15.png)
 
 
 That's a pretty decent result, we were able to get the same thing from Matlab Symbolic Math toolbox and by hand calculation. It's useful for future automation and quick iteration.
@@ -851,7 +851,7 @@ The above attempt (direct calculation of poles of the TF as roots of the denomin
 
 Let's try to do it with this observation: `C1 = (C*Cx)/(C+Cx)`.
 
-![image](https://user-images.githubusercontent.com/95447782/164890690-ac1c0f63-e27b-4463-ac3e-69bb6a9e5425.png)
+![image](https://user-images.githubusercontent.com/95447782/165128930-958cc7a3-f569-491b-8f86-b55a7ba6c7d6.png)
 
 Obeservations are:
 * C1 = C in series with Cx, it's always smaller than C and Cx independently
