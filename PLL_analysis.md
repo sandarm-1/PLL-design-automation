@@ -570,22 +570,22 @@ There are a few options, various ways to stabilize this system.
 
 One way is to add a zero into the system.
 
-This is the PD+CP we have so far, with no Loop Filter other than the Cap in the Carge Pump:
+This is the PD+CP we have so far, with no Loop Filter other than the Cap in the Charge Pump:
 
-![image](https://user-images.githubusercontent.com/95447782/164786293-6234025c-0a66-479e-8bbc-864196772969.png)
+![image](https://user-images.githubusercontent.com/95447782/165124557-179bd4ff-cfd9-4989-94e0-d8004a12bcd7.png)
 
 
 The above figure comes from the previous model that we have developed for the PD+CP ensemble. That's basically a current of "average" value <img src="https://render.githubusercontent.com/render/math?math=\frac{I_o }{2\pi}"> (the "average" and the <img src="https://render.githubusercontent.com/render/math?math={2\pi}"> come from our analysis of the PD gain) and that current is squirted into the Charge Pump cap which is Cx.
 
 Now, the way we add one zero to that is by, instead of squirting the current into a simple cap Cx, we squirt it into a parallel combination of R+C in parallel with Cx.
 
-![image](https://user-images.githubusercontent.com/95447782/164889342-955bd400-b036-4e16-abf4-b4296b3ca220.png)
+![image](https://user-images.githubusercontent.com/95447782/165125059-8b0fa9b2-b58a-456a-b46f-7cf33b4e9d51.png)
 
 If we simply calculate the total impedance formed by the passives, here is what we get:
 
 (R + C) || Cx
 
-![image](https://user-images.githubusercontent.com/95447782/164889396-039c8187-8c17-4c55-ad6f-1121501bab1b.png)
+![image](https://user-images.githubusercontent.com/95447782/165126023-ff8cad75-0f0c-4c58-9797-2336b5a0dc4a.png)
 
 
 This impedance has:
@@ -595,12 +595,12 @@ This impedance has:
 
 That set of poles and zeroes looks like this in the pole-zero diagram:
 
-![image](https://user-images.githubusercontent.com/95447782/164889401-59c3efec-244f-4512-9a0c-588308b4aadf.png)
+![image](https://user-images.githubusercontent.com/95447782/165126280-5273c36a-bc30-4df7-ba85-7a254d538b3a.png)
 
 
 Let's do this poles & zeroes calculation in Matlab, so we can automate this for more complex networks in the future:
 
->    **Matlab script:**
+>    **AUTOMATION:**
 >
 >    This [Matlab script](matlab/impedance_and_poles_of_RCCx_loop_filter.m) can be used to calculate the impedance and pole locations of a 2nd order loop filter.
 >   
@@ -688,7 +688,7 @@ Impedance of Loop Filter (R+C || Cx) by Matlab:
 
 Impedance of Loop Filter (R+C || Cx) by hand calculation:
 
-![image](https://user-images.githubusercontent.com/95447782/164889447-2e8105d0-c9f0-4131-88ed-74a436c686c2.png)
+![image](https://user-images.githubusercontent.com/95447782/165126377-479df3ba-3ed1-46e2-be81-84ea7e67201a.png)
 
 
 So, they match, this is to prove that we can automate the impedance calculation for more complex networks using Matlab's symbolic math toolbox.
@@ -704,12 +704,12 @@ With Matlab we got that:
 
 With hand calculation we got the same thing:
 
-![image](https://user-images.githubusercontent.com/95447782/164889931-10dcbe59-9c1d-476f-8bd5-016459c83a8c.png)
+![image](https://user-images.githubusercontent.com/95447782/165126972-f8080f62-a907-483d-a65a-5080e43d4365.png)
 
 
 And the visual representation of those poles and zeroes in the complex frequency plane (pole/zero diagram) is:
 
-<img src=https://user-images.githubusercontent.com/95447782/164889670-7253b8c3-b207-4d5c-a5ca-093541ea2b34.png alt="" width="400">
+<img src=https://user-images.githubusercontent.com/95447782/165127433-e9a6ceaf-0764-4f1b-bb4a-698ecfc82499.png alt="" width="400">
 
 
 If we now insert this type of Loop Filter into our system's model, now we have:
@@ -718,7 +718,7 @@ If we now insert this type of Loop Filter into our system's model, now we have:
 
 Let's see if this system is stable now. For that, we do the closed loop transfer function and we look at the poles & zeroes of that.
 
->    **Matlab script:**
+>    **AUTOMATION:**
 >
 >    This [Matlab script](matlab/tf_of_pll_with_2nd_order_loop_filter.m) can be used to derive the closed loop transfer function of the PLL with 2nd order Loop Filter
 >    
