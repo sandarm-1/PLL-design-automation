@@ -109,7 +109,7 @@ And, it's quite important to note, THIS IS NOT JUST IN THIS SPECIFIC EXAMPLE (TH
 ## Recap and compare Fractional-N versus Integer-N
 Let's recap and compare:
 
-![image](https://user-images.githubusercontent.com/95447782/164894780-cf595a59-e2d8-4757-bf97-c742384627cc.png)
+![image](https://user-images.githubusercontent.com/95447782/165149397-fa45c53f-d2cf-45b6-972b-1c4f0efee7a3.png)
 
 
 So the spurs is the main thing breaking the Fractional-N. **Can we fix the spurs problem?**
