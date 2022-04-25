@@ -66,7 +66,7 @@ The spurs are a consequence of:
 * But the good news is that the Loop Bandwidth is 1/10 of fref and within that bandwidth the VCO output will mimic the reference oscillator hence the VCO out will be nice and clean within that band. Outside of that band, there will be the spurs. **So, what is better to maximize spur rejection, LARGE Loop Bandwidth or SMALL loop bandwidth?**. The reasoning is simple: the spurs come at fref and multiples of fref, the Loop BW is 1/10 of fref, hence by definition the spurs are always above the filter's cuttoff, i.e. the filter always attenuates the spurs (the spurs are just voltage glitches in Vctrl), the question is how much, and since it's a low pass filter, lower cuttoff frequency attenuates the spurs more (remember spurs are just voltage glitches in Vctrl), so LOWER Loop Bandwidth attenuates spurs more, i.e. it makes the voltage glitches smaller. Since the magnitude of the voltage glitches is <img src="https://render.githubusercontent.com/render/math?math=\Delta V=\frac{\delta {*I}_o }{C+Cx}"> , making C+Cx larger reduces the voltage spikes, that is REDUCING the Loop Bandwidth, since the Loop Bandwidth is equal to the 2nd pole of the Loop Filter which is 1/R*C_series_with_Cx.
 
 
-![image](https://user-images.githubusercontent.com/95447782/164892283-cdd5929d-5afd-4d41-aa2b-6df55c2c5759.png)
+![image](https://user-images.githubusercontent.com/95447782/165138560-6b311f33-ce32-4f8c-8f8f-cccf11da8deb.png)
 
 
 
