@@ -114,14 +114,14 @@ So for PLLs you don't need a very fancy Sigma-Delta, you can just use a 2nd orde
 
 That spectrum is the spectrum of the "CONTROL" signal that governs whether the fractional divider should divide by 90 or by 91, in order to get 90.1 division and hence achieve 901MHz out.
 
-![image](https://user-images.githubusercontent.com/95447782/164895318-88e33906-ea39-4018-9d3e-a2c29b4a7326.png)
+![image](https://user-images.githubusercontent.com/95447782/165364979-f0cbe51f-9838-41ce-808b-5a4a7c6e9604.png)
 
 
 Now if that is the spectrum at the "CONTROL" wire, what is the spectrum at the VCO output? Since that's what we care about.
 
 The VCO output will just look like a modulated version of that signal, which is the spectrum centered around fout and the quantization noise on the sides of it.
 
-![image](https://user-images.githubusercontent.com/95447782/164895330-870a9635-e488-44c2-9784-563080854360.png)
+![image](https://user-images.githubusercontent.com/95447782/165365325-61273b1b-9bb9-49fb-bcd7-8f418be23f0d.png)
 
 
 Within the Loop Bandwidth (magenta arrows), the output of the VCO will mimic the phase noise of the reference oscillator.
@@ -132,7 +132,7 @@ Knowing this, what should be the REQUIREMENT for our Sigma-Delta modulator spect
 
 The answer is we should keep the Sigma-Delta output noise as low as possible within the Loop Bandwidth, so we need to design our Sigma-Delta modulator to have a certain signal to noise ratio (a small enough noise) within that Loop Bandwidth.
 
-![image](https://user-images.githubusercontent.com/95447782/164895341-7d92e7ee-dfcd-4e20-b94c-7c65dce33d3a.png)
+![image](https://user-images.githubusercontent.com/95447782/165365608-a582cbc6-fda8-4436-a7c7-e0b73aa4aeb8.png)
 
 
 In the example where Loop Bandwidth is 1MHz, it means that in the 0 to 1MHz region we need to keep the Sigma-Delta modulator to be low noise enough. Outside of that, i.e. higher than 1MHz, the Sigma-Delta noise can be high, we don't care.
