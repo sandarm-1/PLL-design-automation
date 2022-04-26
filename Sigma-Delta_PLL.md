@@ -49,7 +49,7 @@ Now, for the PLL in particular, the Sigma-Delta modulator will have the followin
 
 This is what such Sigma-Delta looks like, with a generic H inside it. We will define H in a second.
 
-![image](https://user-images.githubusercontent.com/95447782/164895078-b7b54f05-9c35-40fa-92ed-1f1e79b7541e.png)
+![image](https://user-images.githubusercontent.com/95447782/165361036-98125d78-2904-4d3c-affe-b1cf5cab2200.png)
 
 
 In that block, the error block is a simple digital adder (substraction).
@@ -58,7 +58,7 @@ For H, we said we wanted something that has low gain at DC and very high gain at
 
 And that is what an accumulator does.
 
-![image](https://user-images.githubusercontent.com/95447782/164895084-2349a82b-2029-43fb-9d5a-7486573f1f2b.png)
+![image](https://user-images.githubusercontent.com/95447782/165361368-ba62b5f0-6c89-4a1e-90e8-841ec0c957fa.png)
 
 If we pick the output after the register, we have simply a delayed version of that output, so we get the same transfer function just multiplied by z^-1.
 
@@ -70,17 +70,17 @@ In our case we are going to take the output AFTER the register (y) just because 
 
 Then the overall Sigma-Delta loop transfer function is:
 
-![image](https://user-images.githubusercontent.com/95447782/164895111-90f1b380-4eb5-4bb9-8051-d33dd06cf17f.png)
+![image](https://user-images.githubusercontent.com/95447782/165361646-fd52f5e3-25e1-44dd-8f2d-fe729009f88e.png)
 
 
 So we got that overall the Sigma-Delta output transfer function is:
 
-![image](https://user-images.githubusercontent.com/95447782/164895114-f48eeaba-3bd9-465e-9754-31d831a292c2.png)
+![image](https://user-images.githubusercontent.com/95447782/165361725-f9c35011-cb57-4cd2-b3fb-7a9a71718ad5.png)
 
 
 And turning that into the time domain, the time-domain output series is:
 
-![image](https://user-images.githubusercontent.com/95447782/164895118-23065722-a08c-4155-b409-2d85980aaa2b.png)
+![image](https://user-images.githubusercontent.com/95447782/165361991-781e4536-fc4a-4409-b30a-9e1a8e5b8d1b.png)
 
 
 So the output of the Sigma-Delta is the previous input plus the difference between the current quantizer output minus the previous quantizer output.
