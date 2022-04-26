@@ -80,7 +80,7 @@ So we got that overall the Sigma-Delta output transfer function is:
 
 And turning that into the time domain, the time-domain output series is:
 
-![image](https://user-images.githubusercontent.com/95447782/165361991-781e4536-fc4a-4409-b30a-9e1a8e5b8d1b.png)
+![image](https://user-images.githubusercontent.com/95447782/165362094-6a77a1b3-6f9a-46c4-9b23-7c0943d90c66.png)
 
 
 So the output of the Sigma-Delta is the previous input plus the difference between the current quantizer output minus the previous quantizer output.
@@ -91,7 +91,7 @@ BUT the above time series equation is NOT USEFUL in order to calculate the outpu
 
 In order to calculate the Sigma-Delta output stream what we do is we replace the accumulator with its actual circuit model, and we calculate every sample, sample by sample, clock cycle by clock cycle. It's not very difficult once you do a clock cycle or 2 you can do them all.
 
-![image](https://user-images.githubusercontent.com/95447782/164895148-a433f3c6-18c5-4dee-bc08-7a24c0ca5d25.png)
+![image](https://user-images.githubusercontent.com/95447782/165363908-af546ca6-e0c9-40ed-b33b-d0aebd3f3c34.png)
 
 
 Overall we get that the output of the Sigma-Delta is, for an input of 0.1 (for example) the same average value 0.1, but PWM-modulated which is what we wanted.
@@ -102,12 +102,12 @@ We have made this Sigma-Delta 1st order just to see how this works.
 
 If you leave it as 1st order, you will get spurious frequencies for the same reason as before, due to the periodicity and the spectrum would look like this.
 
-![image](https://user-images.githubusercontent.com/95447782/164895293-74ecd603-3fa7-4ad0-a9b8-835b70b613a3.png)
+![image](https://user-images.githubusercontent.com/95447782/165364111-b0d4f199-426d-413a-847a-a569125f9298.png)
 
 
 But as soon as you make it 2nd order then the spurious tones go away (because of no periodicity) and you also get more slope in the noise shaping (40dB/dec instead of 20).
 
-![image](https://user-images.githubusercontent.com/95447782/164895299-51c71d23-4d10-4139-a993-01e72d5767a1.png)
+![image](https://user-images.githubusercontent.com/95447782/165364422-a79ee8aa-50bc-435a-93c8-3efcbc46e63a.png)
 
 
 So for PLLs you don't need a very fancy Sigma-Delta, you can just use a 2nd order one made with integrators, that's all.
