@@ -2,7 +2,7 @@
 
 What's the limitation of the Integer-N and why would we need a Fractional-N synthesizer?
 
-## Motivation for the Fractional-N synthesizer: Channel "raster" in the Integer-N synthesizer
+## Motivation for the Fractional-N synthesizer: Channel raster in the Integer-N synthesizer
 
 In the Integer-N frequency synthesizer, the input reference clock IS EQUAL TO THE CHANNEL SPACING or channel raster. That means that we have a system that:
 * Produces an output frequency between 900MHz up to 1.1GHz in steps of 1MHz.
