@@ -679,7 +679,7 @@ zeroes = solve(N==0,s)
 %=====================================================
 ```
 
-Not how Matlab calculation matches hand calculation for the total Impedance of the Loop Filter (R+C || Cx):
+Note how Matlab calculation matches hand calculation for the total Impedance of the Loop Filter (R+C || Cx):
 
 Impedance of Loop Filter (R+C || Cx) by Matlab:
 
