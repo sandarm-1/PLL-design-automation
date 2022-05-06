@@ -24,6 +24,7 @@ PLL analysis
 
 Matlab scripts
 ---
+[Matlab model Integer-N PLL](/matlab/Matlab_Model_Integer-N_PLL.md)
 [Matlab scripts](/matlab)
 
 
