@@ -66,18 +66,44 @@ Integer-N PLL model:
 ![image](https://user-images.githubusercontent.com/95447782/167127150-d02aa65b-c42a-4028-a593-9a537b0430c3.png)
 
 
-### Loop filter parameters
-Loop filter component values (R, C, Cx) are calculated according to the [PLL analysis (Loop Filter, closed loop TF)](/PLL_analysis.md) with help of the [Matlab scripts](/matlab) which can be used for further automation at later stages.
-
 ### VCO modelling
 The VCO frequency vs voltage response and Kvco is modelled from the actual 3GHz VCO design.
 
-The actual simulated [VCO Fvco VS Vctrl](https://github.com/powergainer/vco) curves are translated to Simulink compatible format and fed into the model to have a realistic representation of the VCO Kvco which affects overall system stability.
+The actual simulated [VCO Fvco VS Vctrl](https://user-images.githubusercontent.com/95447782/159693245-e04fc65c-b5fe-4d00-9a81-7a24189e1221.png) curves are translated to Simulink compatible format and fed into the model to have a realistic representation of the VCO Kvco which affects overall system stability.
+
+![image](https://user-images.githubusercontent.com/95447782/159693245-e04fc65c-b5fe-4d00-9a81-7a24189e1221.png)
+
 
 The following values model the VCO response at the x1 current multiplication mode. The voltage values are shifted down to be centered around 0V, where 0V represents an actual value of 0.9V Vctrl at circuit level. This is to comply with how the Loop Filter output is modelled in Matlab in the Mixed-Signal blockset.
+
 ![image](https://user-images.githubusercontent.com/95447782/167127805-54a1ec47-e35e-45c3-9df1-7f58e6adc23b.png)
 
 
+### Loop filter parameters
+The loop filter is fixed as a passive second order topology, as per our previous analysis. Loop filter component values (R, C, Cx) are calculated according to the [PLL analysis (Loop Filter, closed loop TF)](/PLL_analysis.md), trying to get close to a Loop Bandwidth constraint of 1/10 of fref, with help of the [Matlab scripts](/matlab) which can be used for further automation at later stages.
+
+These values are fed into the Loop Filter model part of the PLL:
+
+![image](https://user-images.githubusercontent.com/95447782/167128404-bf413d2e-0564-447a-9d5c-8ca04a6304ce.png)
 
 
+### Charge Pump
+Charge pump current is chosen as 20uA from stability analysis. A large Kvco value (something that would probably be better off fixed or reduced with the help of V-to-I circuit in the VCO, which is one of the proposed improvements) requires smaller charge pump current steps so that the output of the charge pump and loop filter doesn't make the loop swing in an unstable way.
+
+![image](https://user-images.githubusercontent.com/95447782/167129063-25cc820a-c338-4e72-9b7f-f999920792d6.png)
+
+
+### Prescaler / N feedback divider
+The frequency divider in the feedback path is set to a division value of 128 to match with the requirement of generating 3.2GHz output from a 25MHz input reference frequency.
+
+![image](https://user-images.githubusercontent.com/95447782/167129226-5aff9269-4c62-46b1-8744-0e5a37e8de5a.png)
+
+
+### Closed loop / open loop dynamics
+Based on previous values, the modeled closed loop / open loop dynamics is as follows. A phase margin of 47 degree is predicted in open loop analysis.
+
+![image](https://user-images.githubusercontent.com/95447782/167129532-1ce21090-4b1b-48ed-8775-11bbedeb9c13.png)
+
+
+### Transient behaviour / locking / settling time
 
