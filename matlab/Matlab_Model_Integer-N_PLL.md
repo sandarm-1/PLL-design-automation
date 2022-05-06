@@ -35,7 +35,7 @@ The block diagram of the system will look like this:
 
 In this first model, we are trying to design a PLL system around the existing [3GHz VCO](https://github.com/powergainer/vco).
 
-The target is to put together a **reference PLL** system with well understood dynamics and behaviour, that we can generalize, systematize and automate later on.
+The target is to put together a **reference PLL** system with well understood dynamics and behaviour, that we can **generalize, systematize and automate** later on.
 
 The PLL should be able to output 3.2GHz from a 25MHz/50MHz input reference frequency with an Integer-N topology.
 
@@ -44,11 +44,14 @@ The goal of this Matlab / Simulink model is to verify that the PLL system will m
 * will be able to lock to the correct frequency
 * locking time will be within the required settling time and accuracy
 
-Not much focus is put on noise / spurs performance although we recognize this is an important part of the design, but we are going for a basic Integer-N topology where spurs performance will not be ideal.
+Note: Not much focus is put on noise / spurs performance (VCO noise profile is not characterized due to simulation tool constraints, i.e. ngspice doesn't support pnoise) although we recognize this is an important part of the design. We are going for a basic Integer-N topology where spurs performance will not be ideal and we will focus on functionality, stability, locking time.
 
 Input constraints are:
-* VCO frequency curve (Fvco VS Vctrl) is known beforehand. This is given by the existing VCO design. Note: In other, more likely scenarios, the VCO would be designed to fit to the PLL specifications and not viceversa, but this is the scope at this particular stage.
-* Kvco is therefore known and is an input constraint.
-* N divider ratio 
+* VCO frequency curve ([Fvco VS Vctrl](https://github.com/powergainer/vco)) is known beforehand. This is given by the existing VCO design. Note: In other, more likely scenarios, the VCO would be designed to fit to the PLL specifications and not viceversa, but this is the scope at this particular stage.
+* [Kvco](https://github.com/powergainer/vco) is therefore known and is an input constraint.
+* Input reference frequency
+* N divider ratio (fout / fref). N is 128 for 25MHZ input reference to generate 3.2GHz output.
+
+
 
 
