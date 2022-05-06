@@ -53,5 +53,31 @@ Input constraints are:
 * N divider ratio (fout / fref). N is 128 for 25MHZ input reference to generate 3.2GHz output.
 
 
+### Simulink model
+Simulink model makes use of Integer-N PLL model built in with Mixed-Signal blockset.
+
+This model is representative of the architecture that we are targetting around our existing VCO and is suitable for tuning system parameters such as Loop Filter, CP, etc.
+
+
+Top level PLL testbench:
+![image](https://user-images.githubusercontent.com/95447782/167127034-150b2c52-796e-463a-9ec8-7376fd91f764.png)
+
+Integer-N PLL model:
+![image](https://user-images.githubusercontent.com/95447782/167127150-d02aa65b-c42a-4028-a593-9a537b0430c3.png)
+
+
+### Loop filter parameters
+Loop filter component values (R, C, Cx) are calculated according to the [PLL analysis (Loop Filter, closed loop TF)](/PLL_analysis.md) with help of the [Matlab scripts](/matlab) which can be used for further automation at later stages.
+
+### VCO modelling
+The VCO frequency vs voltage response and Kvco is modelled from the actual 3GHz VCO design.
+
+The actual simulated [VCO Fvco VS Vctrl](https://github.com/powergainer/vco) curves are translated to Simulink compatible format and fed into the model to have a realistic representation of the VCO Kvco which affects overall system stability.
+
+The following values model the VCO response at the x1 current multiplication mode. The voltage values are shifted down to be centered around 0V, where 0V represents an actual value of 0.9V Vctrl at circuit level. This is to comply with how the Loop Filter output is modelled in Matlab in the Mixed-Signal blockset.
+![image](https://user-images.githubusercontent.com/95447782/167127805-54a1ec47-e35e-45c3-9df1-7f58e6adc23b.png)
+
+
+
 
 
