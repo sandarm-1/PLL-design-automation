@@ -31,7 +31,7 @@ The block diagram of the system will look like this:
 
 
 
-## 1st stage: Reference PLL design around existing 3GHz VCO (bottom-up stage)
+## Reference PLL design around existing 3GHz VCO (bottom-up stage)
 
 In this first model, we are trying to design a PLL system around the existing [3GHz VCO](https://github.com/powergainer/vco).
 
@@ -106,4 +106,35 @@ Based on previous values, the modeled closed loop / open loop dynamics is as fol
 
 
 ### Transient behaviour / locking / settling time
+Loop filter output (Vctrl). Settling time / locking time 1.17us.
+
+![image](https://user-images.githubusercontent.com/95447782/167131567-d3d047d2-035e-41bc-9c58-1fb6219f081a.png)
+
+VCO output, 3.2GHz:
+
+![image](https://user-images.githubusercontent.com/95447782/167132255-de0e5733-6f03-45d0-b385-e996ec882342.png)
+
+
+VCO output stabilizes at 3.2GHz, 128x fref (input reference frequency 25MHz).
+
+![image](https://user-images.githubusercontent.com/95447782/167131831-c2ca3833-1b0c-41a4-965c-3587b975f551.png)
+
+
+PD output.
+
+![image](https://user-images.githubusercontent.com/95447782/167132656-a10929dd-da31-4188-99cd-8ac62374bbc0.png)
+
+
+PD output pulses up and down for short periods of time in the locked state as expected.
+
+![image](https://user-images.githubusercontent.com/95447782/167132589-8172b1a1-50b0-4146-a6c5-88e28fcdb255.png)
+
+
+
+
+## Next steps:
+* Feed component values into parameterized netlist, simulate transistor level with extracted VCO, see PLL startup, settling and locking.
+* Layout of Loop Filter components and CP, possibly using ALIGN automated layout framework.
+* Resimulate with PEX (if simulation resources / simulation time feasible)
+* Generalize for other specs (top-down)
 
