@@ -14,7 +14,9 @@ The steps for the development of such model would be:
 * Simulate and verify as close as possible to transistor level, with extracted netlist of as many blocks as feasible given simulation time constraints, at least key blocks requiring parasitic extraction such as VCO, etc. should be extracted.
 
 
+## Model
 
+[Simulink model file](/matlab/PLL_with_3GHz_VCO.slx)
 
 ## Bottom-up design approach Versus Top-down
 The end goal is to derive a **systematic, specs driven top-down approach** to designing a PLL system, in the most systematic and automated way possible, based  on certain input specifications.
