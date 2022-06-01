@@ -1,15 +1,37 @@
 # PLL
 Systematic design of PLL. From specs to GDS in one click. [WIP]
 
-Project scope
----
+## Project scope
+
 Programmatic synthesis of PLL system.
 
-Specs --> Topology selection --> Matlab analysis --> Loop Filter order/Poles-Zeroes --> Component values (R, C, Cx, Io, Kvco) --> Model & Verify PLL closed loop stability --> Netlist --> Layout (ALIGN) --> GDS
+**Very ambitious! (Long Term)**
+
+Specs --> Topology selection --> Matlab analysis --> Loop Filter order/Poles-Zeroes --> Component values (R, C, Cx, Io, Kvco) --> Model & Verify PLL closed loop stability --> Parameterized Netlist --> Layout (ALIGN) --> GDS
 
 
-PLL analysis
----
+### What is done
+
+* PLL analysis ([Integer-N](/Integer-N_PLL.md), [Fractional](/Fractional-N_PLL.md), [Sigma-Delta](/Sigma-Delta_PLL.md))
+* Matlab model Integer-N PLL (around existing VCO)
+* Stable & locks at **3.2GHz**
+* Matlab scripts - automation of Poles & Zeroes analysis (Matlab Symbolic Math Toolbox), component values selection based on Loop BW constraints (R, C, Cx, Io) and Kvco. [scripts](/matlab)
+
+
+### To be done / further work
+
+* Feed component values into parameterized netlist, simulate transistor level with extracted VCO, see PLL startup, settling and locking.
+* Layout of Loop Filter components and CP current sources, possibly using ALIGN automated layout framework (Fix local ALIGN install issues)
+* Resimulate with PEX (if simulation resources / simulation time feasible)
+* Generalize for other specs (top-down)
+
+
+![image](https://user-images.githubusercontent.com/95447782/171378366-c615be31-f4d5-4b8e-9592-909750ed7b8f.png)
+
+
+
+## PLL analysis
+
 [PLL analysis](/PLL_analysis.md)
 
 [Integer-N Phase Locked Loop](/Integer-N_PLL.md)
@@ -22,15 +44,15 @@ PLL analysis
  
 
 
-Matlab scripts
----
+## Matlab scripts
+
 [Matlab model Integer-N PLL](/matlab/Matlab_Model_Integer-N_PLL.md)
 
 [Matlab scripts](/matlab)
 
 
-References
----
+## References
+
 * Kishor Kunal, Meghna Madhusudan, Arvind K. Sharma, Wenbin Xu, Steven M. Burns, Ramesh Harjani, Jiang Hu, Desmond A. Kirkpatrick, and Sachin S. Sapatnekar. 2019. ALIGN: Open-Source Analog Layout Automation from the Ground Up. In Proceedings of the 56th Annual Design Automation Conference 2019 (DAC '19). Association for Computing Machinery, New York, NY, USA, Article 77, 1–4. DOI:https://doi.org/10.1145/3316781.3323471
 
 * Hao Chen, Walker J. Turner, Sanquan Song, Keren Zhu, George F. Kokai, Brian Zimmer, C. Thomas Gray, Brucek Khailany, David Z. Pan, and Haoxing Ren. 2022. AutoCRAFT: Layout Automation for Custom Circuits in Advanced FinFET Technologies. In Proceedings of the 2022 International Symposium on Physical Design (ISPD '22). Association for Computing Machinery, New York, NY, USA, 175–183. DOI:https://doi.org/10.1145/3505170.3511044
