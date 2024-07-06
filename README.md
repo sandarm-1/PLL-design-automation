@@ -1,5 +1,5 @@
 # PLL
-Systematic design of PLL. From specs to GDS in one click. [WIP]
+Systematic design of PLL. From specs to GDS automated. [WIP]
 
 ## Project scope
 
